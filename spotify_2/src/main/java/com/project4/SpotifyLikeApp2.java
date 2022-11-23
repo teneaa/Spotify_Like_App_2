@@ -127,15 +127,34 @@ public static void play(JSONArray library) {
 
 public static void handleCaseL(JSONArray library) {
 
-    /*for (Integer j = 0; j != pickNum; j++) {
-        if (j == pickNum) {
-            JSONObject song = (JSONObject) library.get(j - 1);
-            String songPick = (String) song.get("name");
-            System.out.println("\nYou chose: \n\n" + songPick + "\n\nType 'p' to play this song.\n");
-            System.out.println("\nType 'a' to pause the song currently playing at any time.\n");
-            theSong = songPick;
-        }
-    }*/
+    System.out.println("\n-->Library<--\n");
+    System.out.println("===============================================================================");
+
+    // Use for loop to display json file data
+    for (Integer i = 0; i < library.size(); i++) {
+      JSONObject songs = (JSONObject) library.get(i);
+      String song_name = (String) songs.get("name");
+      System.out.print(i + 1 + "| ");
+      System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
+      System.out.println("| File: " + titleSearch.get(song_name) + "\n");
+    }
+
+    // User input prompt for indicating which
+    // song from the list should be played
+    System.out.println("===============================================================================");
+    System.out.println("Which song from the list would you like to listen to?"); 
+    System.out.println("\nex: type '1' for Cement Lunch \n");
+
+    // Create Scanner for song input
+    Scanner numIn = new Scanner(System.in);
+    Integer pickNum = numIn.nextInt();
+    
+    // Locates song indexed in the library
+    JSONObject song = (JSONObject) library.get(pickNum - 1);
+    String songPick = (String) song.get("name");
+    System.out.println("\nYou chose: \n\n" + songPick + "\n\nType 'p' to play this song.\n");
+    System.out.println("\nType 'a' to pause the song currently playing at any time.\n");
+    theSong = songPick;
 }
 
 // Func: handleMenu()
@@ -171,7 +190,7 @@ public static void handleMenu(String userInput, JSONArray library) {
       break;
 
     case "l":
-    System.out.println("\n-->Library<--\n");
+    /*System.out.println("\n-->Library<--\n");
     System.out.println("===============================================================================");
 
     // Use for loop to display json file data
@@ -198,8 +217,8 @@ public static void handleMenu(String userInput, JSONArray library) {
     String songPick = (String) song.get("name");
     System.out.println("\nYou chose: \n\n" + songPick + "\n\nType 'p' to play this song.\n");
     System.out.println("\nType 'a' to pause the song currently playing at any time.\n");
-    theSong = songPick;
-
+    theSong = songPick;*/
+    handleCaseL(library);
     break;
 
     case "p":

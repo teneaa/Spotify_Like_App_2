@@ -197,7 +197,7 @@ public static void handleMenu(String userInput, JSONArray library) {
       play(library);
       break;
 
-    case "x":
+    case "a":
 
       // Stops current audio clip from playing
       // but does not quit the program
@@ -252,7 +252,7 @@ public static void handleMenu(String userInput, JSONArray library) {
     System.out.println("[S]earch by title");
     System.out.println("[L]ibrary");
     System.out.println("[P]lay");
-    System.out.println("e[X]it_or_Pause");
+    System.out.println("p[A]use");
     System.out.println("[Q]uit");
 
     System.out.println("");

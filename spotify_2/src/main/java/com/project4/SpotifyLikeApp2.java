@@ -122,7 +122,24 @@ public static void play(JSONArray library) {
   }
 }
 
-//handles the user input for the app
+// Func: handleCaseL()
+// Desc: handles library functionality
+
+public static void handleCaseL(JSONArray library) {
+
+    /*for (Integer j = 0; j != pickNum; j++) {
+        if (j == pickNum) {
+            JSONObject song = (JSONObject) library.get(j - 1);
+            String songPick = (String) song.get("name");
+            System.out.println("\nYou chose: \n\n" + songPick + "\n\nType 'p' to play this song.\n");
+            System.out.println("\nType 'a' to pause the song currently playing at any time.\n");
+            theSong = songPick;
+        }
+    }*/
+}
+
+// Func: handleMenu()
+// Desc: handles the user input for the app
 
 public static void handleMenu(String userInput, JSONArray library) {
   switch (userInput) {
@@ -154,41 +171,36 @@ public static void handleMenu(String userInput, JSONArray library) {
       break;
 
     case "l":
-      System.out.println("\n-->Library<--\n");
-      System.out.println("===============================================================================");
+    System.out.println("\n-->Library<--\n");
+    System.out.println("===============================================================================");
 
-      // Use for loop to display json file data
-      for (Integer i = 0; i < library.size(); i++) {
-        JSONObject songs = (JSONObject) library.get(i);
-        String song_name = (String) songs.get("name");
-        System.out.print(i + 1 + "| ");
-        System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
-        System.out.println("| File: " + titleSearch.get(song_name) + "\n");
-      }
+    // Use for loop to display json file data
+    for (Integer i = 0; i < library.size(); i++) {
+      JSONObject songs = (JSONObject) library.get(i);
+      String song_name = (String) songs.get("name");
+      System.out.print(i + 1 + "| ");
+      System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
+      System.out.println("| File: " + titleSearch.get(song_name) + "\n");
+    }
 
-      // User input prompt for indicating which
-      // song from the list should be played
-      System.out.println("===============================================================================");
-      System.out.println("Which song from the list would you like to listen to?"); 
-      System.out.println("\nex: type '1' for Cement Lunch \n");
+    // User input prompt for indicating which
+    // song from the list should be played
+    System.out.println("===============================================================================");
+    System.out.println("Which song from the list would you like to listen to?"); 
+    System.out.println("\nex: type '1' for Cement Lunch \n");
 
-      // Create Scanner for song input
-      Scanner numIn = new Scanner(System.in);
-      Integer pickNum = numIn.nextInt();
-      Integer j = 0;
-      while (j != pickNum) {
-        j++;
-      }
+    // Create Scanner for song input
+    Scanner numIn = new Scanner(System.in);
+    Integer pickNum = numIn.nextInt();
+    
+    // Locates song indexed in the library
+    JSONObject song = (JSONObject) library.get(pickNum - 1);
+    String songPick = (String) song.get("name");
+    System.out.println("\nYou chose: \n\n" + songPick + "\n\nType 'p' to play this song.\n");
+    System.out.println("\nType 'a' to pause the song currently playing at any time.\n");
+    theSong = songPick;
 
-      // Confirms the user's song choice
-      if (j == pickNum) {
-        JSONObject song = (JSONObject) library.get(j - 1);
-        String songPick = (String) song.get("name");
-        System.out.println("\nYou chose: \n\n" + songPick + ".\n\nIf you would like to play this song, type 'p'.\n");
-        System.out.println("\nType 'x' to stop/ pause the current song at any time.\n");
-        theSong = songPick;
-      }
-      break;
+    break;
 
     case "p":
       

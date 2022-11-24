@@ -7,7 +7,6 @@ import java.util.*;
 import javax.sound.sampled.*;
 import org.json.simple.*;
 import org.json.simple.parser.*;
-
 // declares a class for the app
 public class SpotifyLikeApp2 {
     
@@ -15,18 +14,17 @@ public class SpotifyLikeApp2 {
     String status;
     Long position;
     static Clip audioClip;
-    static Scanner anyInput = new Scanner(System.in);
 
-  static HashMap<String,String> titleSearch = new HashMap<>();
-  static HashMap<String,String> findArtist = new HashMap<>();
-  static Map<String,Integer> playSongFile = new HashMap<String,Integer>();
-  static String theSong;
+    static HashMap<String,String> titleSearch = new HashMap<>();
+    static HashMap<String,String> findArtist = new HashMap<>();
+    static Map<String,Integer> playSongFile = new HashMap<String,Integer>();
+    static String theSong;
   
-  // Func: readJSONFile
-  // Desc: Reads a json file storing an array and returns an object
-  // that can be iterated over
+    // Func: readJSONFile
+    // Desc: Reads a json file storing an array and returns an object
+    // that can be iterated over
 
-  public static JSONArray readJSONArrayFile(String fileName) {
+    public static JSONArray readJSONArrayFile(String fileName) {
     // JSON parser object to parse read file
     JSONParser jsonParser = new JSONParser();
 
@@ -126,7 +124,7 @@ public static void play(JSONArray library) {
 // Func: handleCaseL()
 // Desc: handles selecting songs from library index
 
-public static void handleCaseL(JSONArray library) {
+public static void handleCaseL(JSONArray library, Scanner sc) {
 
     System.out.println("\n-->Library<--\n");
     System.out.println("===============================================================================");
@@ -146,8 +144,7 @@ public static void handleCaseL(JSONArray library) {
     System.out.println("Which song from the list would you like to listen to?"); 
     System.out.println("\nex: type '1' for Cement Lunch \n");
 
-    //Scanner numIn = new Scanner(System.in);
-    Integer pickNum = anyInput.nextInt();
+    Integer pickNum = sc.nextInt();
 
     // Locates song indexed in the library
     JSONObject song = (JSONObject) library.get(pickNum - 1);
@@ -156,9 +153,6 @@ public static void handleCaseL(JSONArray library) {
     System.out.println("\nYou chose: \n\n" + songPick + "\n\nType 'p' to play this song.\n");
     System.out.println("\nType 'a' to pause the song currently playing at any time.\n");
     theSong = songPick;
-    
-    // Close the scanner
-    //numIn.close();
 }
 
 // Func: handleMenu()
@@ -195,8 +189,9 @@ public static void handleMenu(String userInput, JSONArray library) {
 
     case "l":
       
-      handleCaseL(library);
-      break;
+        Scanner numIn = new Scanner(System.in);  
+        handleCaseL(library, numIn);
+        break;
 
     case "p":
       
@@ -231,15 +226,16 @@ public static void handleMenu(String userInput, JSONArray library) {
     JSONArray library = readAudioLibrary();
 
     // create a scanner for user input
-    //Scanner input = new Scanner(System.in);
+    Scanner menuInput = new Scanner(System.in);
 
     String userInput = "";
+
     while (!userInput.equals("q")) {
         
         menu();
         
         // get user input
-        userInput = anyInput.nextLine();
+        userInput = menuInput.nextLine();
 
         // handle upper and lower case entries
         userInput = userInput.toLowerCase();
@@ -249,7 +245,7 @@ public static void handleMenu(String userInput, JSONArray library) {
     }
 
     // close the scanner
-    anyInput.close();
+    menuInput.close();
   }
 
   /*

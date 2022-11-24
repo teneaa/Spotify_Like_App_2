@@ -10,11 +10,12 @@ import org.json.simple.parser.*;
 
 // declares a class for the app
 public class SpotifyLikeApp2 {
-
-      // global variables for the app
-  String status;
-  Long position;
-  static Clip audioClip;
+    
+    // global variables for the app
+    String status;
+    Long position;
+    static Clip audioClip;
+    static Scanner anyInput = new Scanner(System.in);
 
   static HashMap<String,String> titleSearch = new HashMap<>();
   static HashMap<String,String> findArtist = new HashMap<>();
@@ -123,7 +124,7 @@ public static void play(JSONArray library) {
 }
 
 // Func: handleCaseL()
-// Desc: handles library functionality
+// Desc: handles selecting songs from library index
 
 public static void handleCaseL(JSONArray library) {
 
@@ -145,16 +146,19 @@ public static void handleCaseL(JSONArray library) {
     System.out.println("Which song from the list would you like to listen to?"); 
     System.out.println("\nex: type '1' for Cement Lunch \n");
 
-    // Create Scanner for song input
-    Scanner numIn = new Scanner(System.in);
-    Integer pickNum = numIn.nextInt();
-    
+    //Scanner numIn = new Scanner(System.in);
+    Integer pickNum = anyInput.nextInt();
+
     // Locates song indexed in the library
     JSONObject song = (JSONObject) library.get(pickNum - 1);
+    
     String songPick = (String) song.get("name");
     System.out.println("\nYou chose: \n\n" + songPick + "\n\nType 'p' to play this song.\n");
     System.out.println("\nType 'a' to pause the song currently playing at any time.\n");
     theSong = songPick;
+    
+    // Close the scanner
+    //numIn.close();
 }
 
 // Func: handleMenu()
@@ -190,42 +194,17 @@ public static void handleMenu(String userInput, JSONArray library) {
       break;
 
     case "l":
-    /*System.out.println("\n-->Library<--\n");
-    System.out.println("===============================================================================");
-
-    // Use for loop to display json file data
-    for (Integer i = 0; i < library.size(); i++) {
-      JSONObject songs = (JSONObject) library.get(i);
-      String song_name = (String) songs.get("name");
-      System.out.print(i + 1 + "| ");
-      System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
-      System.out.println("| File: " + titleSearch.get(song_name) + "\n");
-    }
-
-    // User input prompt for indicating which
-    // song from the list should be played
-    System.out.println("===============================================================================");
-    System.out.println("Which song from the list would you like to listen to?"); 
-    System.out.println("\nex: type '1' for Cement Lunch \n");
-
-    // Create Scanner for song input
-    Scanner numIn = new Scanner(System.in);
-    Integer pickNum = numIn.nextInt();
-    
-    // Locates song indexed in the library
-    JSONObject song = (JSONObject) library.get(pickNum - 1);
-    String songPick = (String) song.get("name");
-    System.out.println("\nYou chose: \n\n" + songPick + "\n\nType 'p' to play this song.\n");
-    System.out.println("\nType 'a' to pause the song currently playing at any time.\n");
-    theSong = songPick;*/
-    handleCaseL(library);
-    break;
+      
+      handleCaseL(library);
+      break;
 
     case "p":
       
       System.out.println("\n-->Play<--\n");
       System.out.println("===============================================================================");
+
       play(library);
+
       break;
 
     case "a":
@@ -252,25 +231,25 @@ public static void handleMenu(String userInput, JSONArray library) {
     JSONArray library = readAudioLibrary();
 
     // create a scanner for user input
-    Scanner input = new Scanner(System.in);
+    //Scanner input = new Scanner(System.in);
 
     String userInput = "";
     while (!userInput.equals("q")) {
+        
+        menu();
+        
+        // get user input
+        userInput = anyInput.nextLine();
 
-      menu();
+        // handle upper and lower case entries
+        userInput = userInput.toLowerCase();
 
-      // get input
-      userInput = input.nextLine();
-
-      // handle upper and lower case entries
-      userInput = userInput.toLowerCase();
-
-      // do something
-      handleMenu(userInput, library);
+        // do something
+        handleMenu(userInput, library);
     }
 
     // close the scanner
-    input.close();
+    anyInput.close();
   }
 
   /*

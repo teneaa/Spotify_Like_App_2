@@ -121,6 +121,29 @@ public static void play(JSONArray library) {
   }
 }
 
+// Func: handleCaseS()
+// Desc: handles searching for songs by title
+
+public static void handleCaseS(Scanner sc) {
+  System.out.println("\n-->Search by title<--\n");
+  System.out.println("===============================================================================");
+  System.out.println("\nEnter the name of a song: \n");
+
+  // get title of a song
+  String title = sc.nextLine();
+
+  // Assign theSong to the title that user input
+  theSong = title;
+
+  // Find the song info by title and prompt user to play the song
+  System.out.println("\nThe file for that song is: " + titleSearch.get(title) + "\n");
+  System.out.println("Type 'p' to play this song: ");
+
+  // Provide user with more info about the main menu
+  System.out.println("\nType 'l' to see where this song is located in the songs library catalog\n");
+  System.out.println("\nType 'x' to stop/ pause the current song at any time.\n");
+
+}
 // Func: handleCaseL()
 // Desc: handles selecting songs from library index
 
@@ -161,37 +184,20 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
 public static void handleMenu(String userInput, JSONArray library) {
   switch (userInput) {
     case "h":
-    System.out.println("\n-->Home<--\n");
-    System.out.println("===============================================================================");
+      System.out.println("\n-->Home<--\n");
+      System.out.println("===============================================================================");
       break;
     case "s":
-      System.out.println("\n-->Search by title<--\n");
-      System.out.println("===============================================================================");
-      System.out.println("\nEnter the name of a song: \n");
 
-      // create a scanner for title input
       Scanner input = new Scanner(System.in);
-
-      // get title of a song
-      String title = input.nextLine();
-
-      // Assign theSong to the title that user input
-      theSong = title;
-
-      // Find the song info by title and prompt user to play the song
-      System.out.println("\nThe file for that song is: " + titleSearch.get(title) + "\n");
-      System.out.println("Type 'p' to play this song: ");
-
-      // Provide user with more info about the main menu
-      System.out.println("\nType 'l' to see where this song is located in the songs library catalog\n");
-      System.out.println("\nType 'x' to stop/ pause the current song at any time.\n");
+      handleCaseS(input);
       break;
 
     case "l":
       
-        Scanner numIn = new Scanner(System.in);  
-        handleCaseL(library, numIn);
-        break;
+      Scanner numIn = new Scanner(System.in);  
+      handleCaseL(library, numIn);
+      break;
 
     case "p":
       

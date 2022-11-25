@@ -1,0 +1,122 @@
+[
+    {
+      "index": 0,
+      "name": "La Gata Bajo La Lluvia",
+      "artist": "Chico Trujillo",
+      "year": 2010,
+      "genre": "Cumbia",
+        "filename": "la-gata-bajo-la-llubia.wav"
+    },
+    {
+      "index": 1,
+      "name": "Lanzaplatos",
+      "artist": "Chico Trujillo",
+      "year": 2010,
+      "genre": "Cumbia",
+      "filename": "lanzaplatos.wav"
+    },
+    {
+      "index": 2,
+      "name": "Sombrero Calentones",
+      "artist": "Chico Trujillo",
+      "year": 2010,
+      "genre": "Cumbia",
+        "filename": "sombrero-calentones.wav"
+    },
+    {
+      "index": 3,
+      "name": "La Cumbia Pasando",
+      "artist": "Chogo El Bandeño",
+      "year": 2018,
+      "genre": "Cumbia",
+      "filename": "la-cumbia-pasando.wav"
+    },
+    {
+      "index": 4,
+      "name": "Cumbia De Obama",
+      "artist": "Fósforo",
+      "year": 2008,
+      "genre": "Cumbia",
+      "filename": "cumbia-de-obama.wav"
+    },
+    {
+      "index": 5,
+      "name": "Desperado",
+      "artist": "Pistol Jazz",
+      "year": 2017,
+      "genre": "JP Jazz",
+      "filename": "desperado.wav"
+    },
+    {
+      "index": 6,
+      "name": "God Speed",
+      "artist": "Pistol Jazz",
+      "year": 2017,
+      "genre": "JP Jazz",
+      "filename": "god-speed.wav"
+    },
+    {
+      "index": 7,
+      "name": "Hi no Tori (Taiko Solo)",
+      "artist": "Pistol Jazz",
+      "year": 2017,
+      "genre": "JP Jazz",
+      "filename": "hi-no-tori--taiko-solo.wav"
+    },
+    {
+      "index": 8,
+      "name": "Irezumi",
+      "artist": "Pistol Jazz",
+      "year": 2019,
+      "genre": "JP Jazz",
+      "filename": "irezumi.wav"
+    },
+    {
+      "index": 9,
+      "name": "Rude Blue Swallow Swing (Remix)",
+      "artist": "Pistol Jazz",
+      "year": 2016,
+      "genre": "JP Jazz",
+      "filename": "rude-blue-swallow-swing--remix.wav"
+    },
+    {
+        "index": 10,
+        "name": "Cauldron Chemistry",
+        "artist": "Edward Shallow",
+        "year": 2013,
+        "genre": "Experimental",
+        "filename": "cauldron-chemistry.wav"
+      },
+      {
+        "index": 11,
+        "name": "Fractal Crook",
+        "artist": "Edward Shallow",
+        "year": 2013,
+        "genre": "Experimental",
+        "filename": "fractal-crook.wav"
+      },
+      {
+        "index": 12,
+        "name": "The Infinite Railroad",
+        "artist": "Edward Shallow",
+        "year": 2013,
+        "genre": "Experimental",
+        "filename": "the-infinite-railroad.wav"
+      },
+      {
+        "index": 13,
+        "name": "Unluck",
+        "artist": "Edward Shallow",
+        "year": 2013,
+        "genre": "Experimental",
+        "filename": "unluck.wav"
+      },
+      {
+        "index": 14,
+        "name": "1",
+        "artist": "GDFX",
+        "year": 2011,
+        "genre": "Experimental",
+        "filename": "gdfx-1.wav"
+      }
+  ]

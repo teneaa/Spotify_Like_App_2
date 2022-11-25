@@ -210,7 +210,7 @@ public static void handleMenu(String userInput, JSONArray library) {
 
     case "a":
 
-      // Stops current audio clip from playing
+      // Pauses currently playing audio
       // but does not quit the program
       audioClip.close();
 
@@ -218,6 +218,7 @@ public static void handleMenu(String userInput, JSONArray library) {
       System.out.println("\n-->Quit<--\n");
       System.out.println("===============================================================================");
       break;
+      
     default: 
       break;
     }

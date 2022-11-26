@@ -170,7 +170,7 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
       String song_name = (String) songs.get("name");
       System.out.print(i + 1 + "| ");
       System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
-      //System.out.print(" | Year: " + getSongYear.get(song_name));
+      System.out.print(" | Year: " + getSongYear.get(song_name));
       System.out.print(" | Genre: " + getGenre.get(song_name));
       System.out.println("| File: " + titleSearch.get(song_name) + "\n");
     }

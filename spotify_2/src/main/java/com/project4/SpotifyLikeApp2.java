@@ -18,7 +18,7 @@ public class SpotifyLikeApp2 {
     static HashMap<String,String> titleSearch = new HashMap<>();
     static HashMap<String,String> findArtist = new HashMap<>();
     static HashMap<String,String> getGenre = new HashMap<>();
-    //static Map<String,Integer> getSongYear = new HashMap<String,Integer>();
+    static Map<String,Long> getSongYear = new HashMap<String,Long>();
     static Map<String,Integer> playSongFile = new HashMap<String,Integer>();
     static String theSong;
   
@@ -53,7 +53,7 @@ public class SpotifyLikeApp2 {
         String artist = (String) Items.get("artist");
         // Objects that still need to be placed into hashmaps:
         String genre = (String) Items.get("genre");
-        //Integer releaseYear = (Integer) Items.get("year");
+        Long releaseYear = (Long) Items.get("year");
 
         Integer songNum = i;
 
@@ -67,7 +67,7 @@ public class SpotifyLikeApp2 {
         getGenre.put((song),(genre));
 
         //Place song and release year into getSongYear HashMap
-        //getSongYear.put((song),(releaseYear));
+        getSongYear.put((song),(releaseYear));
 
         //Place song and index number into playSongFile HashMap
         playSongFile.put((song),(songNum));

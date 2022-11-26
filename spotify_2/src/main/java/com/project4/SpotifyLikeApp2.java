@@ -17,6 +17,8 @@ public class SpotifyLikeApp2 {
 
     static HashMap<String,String> titleSearch = new HashMap<>();
     static HashMap<String,String> findArtist = new HashMap<>();
+    static HashMap<String,String> getGenre = new HashMap<>();
+    static Map<String,Integer> getSongYear = new HashMap<String,Integer>();
     static Map<String,Integer> playSongFile = new HashMap<String,Integer>();
     static String theSong;
   
@@ -49,6 +51,10 @@ public class SpotifyLikeApp2 {
         String song = (String) Items.get("name");
         String file = (String) Items.get("filename");
         String artist = (String) Items.get("artist");
+        // Objects that still need to be placed into hashmaps:
+        String genre = (String) Items.get("genre");
+        Integer releaseYear = (Integer) Items.get("year");
+
         Integer songNum = i;
 
         //Place song titles and file names titleSearch HashMap
@@ -56,6 +62,12 @@ public class SpotifyLikeApp2 {
 
         //Place song and artist into findArtst HashMap
         findArtist.put((song),(artist));
+
+        //Place song and genre into getGenre HashMap
+        getGenre.put((song),(genre));
+
+        //Place song and release year into getSongYear HashMap
+        getSongYear.put((song),(releaseYear));
 
         //Place song and index number into playSongFile HashMap
         playSongFile.put((song),(songNum));
@@ -158,6 +170,8 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
       String song_name = (String) songs.get("name");
       System.out.print(i + 1 + "| ");
       System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
+      System.out.print(" | Year: " + getSongYear.get(song_name));
+      System.out.print(" | Genre: " + getGenre.get(song_name));
       System.out.println("| File: " + titleSearch.get(song_name) + "\n");
     }
 

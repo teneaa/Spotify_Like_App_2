@@ -78,7 +78,7 @@ public class SpotifyLikeApp2 {
 
 // read the audio library of music
 public static JSONArray readAudioLibrary() {
-  final String jsonFileName = "audio-library.json";
+  final String jsonFileName = "audio-library1.json";
   final String filePath = basePath + "/" + jsonFileName;
 
   JSONArray jsonData = readJSONArrayFile(filePath);
@@ -98,7 +98,7 @@ public static void play(JSONArray library) {
   final Integer songIndex = playSongFile.get(theSong);
   JSONObject obj = (JSONObject) library.get(songIndex);
   final String filename = (String) obj.get("filename");
-  final String filePath = basePath + "/wav/" + filename;
+  final String filePath = basePath + "/wav1/" + filename;
   final File file = new File(filePath);
 
   // stop the current song from playing, before playing the next one
@@ -225,7 +225,7 @@ public static void handleMenu(String userInput, JSONArray library) {
   }
 
   private static String basePath =
-    "/Users/teneaallen/Desktop/Fall 2022 /Java Programming/Assignments/Week_10/Spotify_Project/Spotify_Like_App_1/spotify_1/spotify-example-code2";
+    "/Users/teneaallen/Desktop/Fall 2022 /Java Programming/Assignments/Week_12/Spotify_Project/Spotify_Like_App_2/spotify_2/spotify_app_files";
 
   // "main" makes this class a java app that can be executed
   public static void main(final String[] args) {

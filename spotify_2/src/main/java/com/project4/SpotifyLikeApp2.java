@@ -104,7 +104,7 @@ public static JSONArray readAudioLibrary() {
 // Desc: plays an audio file
 
 public static void play(JSONArray library) {
-  
+
   // open the audio file
   // get the filePath and open a audio file
   final Integer songIndex = playSongFile.get(theSong);
@@ -156,19 +156,24 @@ private static void handlePlayMenu(JSONArray library, String st) {
       break;
     
     case "a":
-      System.out.println("\n--------------------------------> PAUSED <----------------------------------\n");
-      System.out.println("================================================================================");
-      //Place holder for pause method
-      audioClip.close();
-      //Insert pause method here
+      if (audioClip == null) {
+        System.out.println("There is no audio currently playing.\n\nPress 'p' to play a song first");
+        System.out.println("or press 'x' to exit.\n\n");
+      } else {
+        System.out.println("\n--------------------------------> PAUSED <----------------------------------\n");
+        System.out.println("================================================================================");
+      }
+        //Place holder for pause method
+        audioClip.close();
+        //Insert pause method here
       break;
 
     case "s":
       
       // Handle error when user chooses "stopped", but no song is playing
-      if ((status != "playing") && (status != "paused")) {
-        System.out.println("There is no audio currently playing.\nPress 'p' to play a song first");
-        System.out.println("or press 'x' to exit");
+      if (audioClip == null) {
+        System.out.println("There is no audio currently playing.\n\nPress 'p' to play a song first");
+        System.out.println("or press 'x' to exit.\n\n");
       } else {
         System.out.println("\n---------------------------------> STOPPED <----------------------------------\n");
         System.out.println("==================================================================================");

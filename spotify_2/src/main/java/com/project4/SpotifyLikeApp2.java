@@ -15,13 +15,17 @@ public class SpotifyLikeApp2 {
     Long position;
     static Clip audioClip;
 
+    // HashMaps used to get specif song data
     static HashMap<String,String> titleSearch = new HashMap<>();
     static HashMap<String,String> findArtist = new HashMap<>();
     static HashMap<String,String> getGenre = new HashMap<>();
     static Map<String,Long> getSongYear = new HashMap<String,Long>();
     static Map<String,Integer> playSongFile = new HashMap<String,Integer>();
     static String theSong;
-  
+
+    // All Public Functions
+    //===============================================================================================
+
     // Func: readJSONFile
     // Desc: Reads a json file storing an array and returns an object
     // that can be iterated over
@@ -103,7 +107,7 @@ public static JSONArray readAudioLibrary() {
 // Func: play() 
 // Desc: plays an audio file
 
-public static void play(JSONArray library) {
+private static void play(JSONArray library) {
 
   // open the audio file
   // get the filePath and open a audio file
@@ -162,10 +166,11 @@ private static void handlePlayMenu(JSONArray library, String st) {
       } else {
         System.out.println("\n--------------------------------> PAUSED <----------------------------------\n");
         System.out.println("================================================================================");
-      }
         //Place holder for pause method
         audioClip.close();
         //Insert pause method here
+      }
+        
       break;
 
     case "s":
@@ -317,27 +322,9 @@ public static void handleMenu(String userInput, JSONArray library) {
     /*case "f":
       Scanner faveIn = new Scanner(System.in);
       handleCaseF();  
-      break;*/
-
-    case "p":
-      
-      System.out.println("\n-->Play<--\n");
-      System.out.println("===============================================================================");
-      play(library);
-
       break;
-
-    case "a":
-
-      // Pauses currently playing audio
-      audioClip.close();
-      break;
-
-    case "t": 
-      // Stops current audio file and returns user to menu()
-      audioClip.stop();
-      theSong = null;
-      break;
+    */
+    
     case "q":
       System.out.println("\n-->Quit<--\n");
       System.out.println("===============================================================================");
@@ -379,19 +366,14 @@ public static void handleMenu(String userInput, JSONArray library) {
     menuInput.close();
   }
 
-  /*
-   * displays the menu for the app
-   * displays different layout for when home is selectedS
-   */
+  // Func: menu()
+  // Desc: Displays menu for the app; different layout when home is selected
   public static void menu(JSONArray library) {
     nowPlayingInfo(library);
     System.out.println("\n---- SpotifyLikeApp ----\n");
     System.out.println("[H]ome");
     System.out.println("[S]earch by title");
     System.out.println("[L]ibrary");
-    System.out.println("[P]lay");
-    System.out.println("p[A]use");
-    System.out.println("S[T]op");
     System.out.println("[F]avorites");
     System.out.println("[Q]uit");
 

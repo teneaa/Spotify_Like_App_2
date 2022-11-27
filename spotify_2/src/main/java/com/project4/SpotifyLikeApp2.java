@@ -145,7 +145,7 @@ public static void playMenuOptionsUI() {
 
 // Func: statusPlayMenu()
 // Desc: Handles options for manipulating audio and provides audio status info
-public static void statusPlayMenu(String status, JSONArray library, Scanner sc) {
+private static void statusPlayMenu(String status, JSONArray library, Scanner sc) {
 
   // Display UI audio options menu
   playMenuOptionsUI();

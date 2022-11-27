@@ -11,7 +11,7 @@ import org.json.simple.parser.*;
 public class SpotifyLikeApp2 {
     
     // global variables for the app
-    static String status;
+    static String status = "";
     Long position;
     static Clip audioClip;
 
@@ -104,8 +104,8 @@ public static JSONArray readAudioLibrary() {
 // Desc: plays an audio file
 
 public static void play(JSONArray library) {
+  
   // open the audio file
-
   // get the filePath and open a audio file
   final Integer songIndex = playSongFile.get(theSong);
   JSONObject obj = (JSONObject) library.get(songIndex);
@@ -133,29 +133,21 @@ public static void play(JSONArray library) {
   }
 }
 
-// Func: playMenuOptionsUI()
+// Func: showAudioMenu()
 // Desc: Displays options within the play menu
-private static void playMenuOptionsUI() {
-  System.out.println("***********************************************************");
-  System.out.println("*---------------------------------------------------------*");
-  System.out.println("*|||·······[P]lay  ···   p[A]use   ···   [S]top········|||*");
-  System.out.println("*---------------------------------------------------------*");
-  System.out.println("***********************************************************");
+private static void showAudioMenu() {
+  System.out.println("*************************************************************************");
+  System.out.println("*-----------------------------------------------------------------------*");
+  System.out.println("*|||······ [P]lay  ···   p[A]use   ···   [S]top   ···   e[X]it ······|||*");
+  System.out.println("*-----------------------------------------------------------------------*");
+  System.out.println("*************************************************************************");
 }
 
-// Func: statusPlayMenu()
-// Desc: Handles options for manipulating audio and provides audio status info
-private static void statusPlayMenu(String status, JSONArray library, Scanner sc) {
+// Func: handlePlayMenu()
+// Desc: Handles options for manipulating audio
+private static void handlePlayMenu(JSONArray library, String st) {
 
-  // Display UI audio options menu
-  playMenuOptionsUI();
-  
-  // get user input
-  status = sc.nextLine();
-
-  // handle upper and lower case entries
-  status = status.toLowerCase();
-  switch (status) {
+  switch (st) {
     
     case "p":
       System.out.println("\n------------------------------> NOW PLAYING <-------------------------------\n");
@@ -172,18 +164,48 @@ private static void statusPlayMenu(String status, JSONArray library, Scanner sc)
       break;
 
     case "s":
-    System.out.println("\n---------------------------------> STOPPED <----------------------------------\n");
-    System.out.println("==================================================================================");
-    audioClip.stop();
-    break;
       
+      // Handle error when user chooses "stopped", but no song is playing
+      if ((status != "playing") && (status != "paused")) {
+        System.out.println("There is no audio currently playing.\nPress 'p' to play a song first");
+        System.out.println("or press 'x' to exit");
+      } else {
+        System.out.println("\n---------------------------------> STOPPED <----------------------------------\n");
+        System.out.println("==================================================================================");
+        audioClip.stop();
+      }
+      
+      break;
+
+    case "x":
+      
+      // Exits play menu without stopping song play
+      System.out.println("\n---------------------------------> EXITED PLAY MENU <----------------------------------\n");
+      System.out.println("==================================================================================");
+   
     default: 
       break;
   }
+}
 
-  // close the scanner
-  //handleAudio.close();
+// Func: playMenu()
+// Desc: Handles options for manipulating audio and provides audio status info
+private static void playMenu(String st, JSONArray library, Scanner sc) {
 
+  // Display UI audio options menu
+  showAudioMenu();
+
+  while (!st.equals("x")) {
+
+    // get user input
+    st = sc.nextLine();
+
+    // handle upper and lower case entries
+    status = st.toLowerCase();
+
+    // let user handle audio
+    handlePlayMenu(library, status);
+  }
 }
 
 // Func: nowPlayingInfo()
@@ -198,9 +220,7 @@ public static void nowPlayingInfo(JSONArray library) {
       System.out.print(" | Year: " + getSongYear.get(song_name));
       System.out.print(" | Genre: " + getGenre.get(song_name));
       System.out.println("| File: " + titleSearch.get(song_name) + "\n");
-    } else {
-      ;
-    }
+    };
   }
 
 }
@@ -224,7 +244,7 @@ public static void handleCaseS(Scanner sc, JSONArray library) {
   
   // Scanner for playmenu:
   Scanner handleAudio = new Scanner(System.in);
-  statusPlayMenu(status,library, handleAudio);
+  playMenu(status,library, handleAudio);
 
 }
 // Func: handleCaseL()
@@ -258,15 +278,14 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
     JSONObject song = (JSONObject) library.get(pickNum - 1);
     
     String songPick = (String) song.get("name");
-    System.out.println("\nYou chose: \n\n");
-    System.out.println("======================");
-    System.out.println("*   " + songPick + "  *");
-    System.out.println("=======================");
+    System.out.println("\nYou chose:\n================================ ");
+    System.out.println("||     " + songPick + "      ||");
+    System.out.println("================================\n");
     theSong = songPick;
 
     // Scanner for playmenu:
     Scanner handleAudio = new Scanner(System.in);
-    statusPlayMenu(status, library, handleAudio);
+    playMenu(status, library, handleAudio);
 }
 
 // Func: handleMenu()

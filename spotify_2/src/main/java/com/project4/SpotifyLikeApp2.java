@@ -236,10 +236,6 @@ public static void handleMenu(String userInput, JSONArray library) {
       
       System.out.println("\n-->Play<--\n");
       System.out.println("===============================================================================");
-
-      // insert text with all library info data except for index value
-      nowPlayingInfo(library);
-   
       play(library);
 
       break;
@@ -275,7 +271,7 @@ public static void handleMenu(String userInput, JSONArray library) {
 
     while (!userInput.equals("q")) {
         
-        menu();
+        menu(library);
         
         // get user input
         userInput = menuInput.nextLine();
@@ -295,7 +291,8 @@ public static void handleMenu(String userInput, JSONArray library) {
    * displays the menu for the app
    * displays different layout for when home is selectedS
    */
-  public static void menu() {
+  public static void menu(JSONArray library) {
+    nowPlayingInfo(library);
     System.out.println("\n---- SpotifyLikeApp ----\n");
     System.out.println("[H]ome");
     System.out.println("[S]earch by title");

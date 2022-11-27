@@ -15,7 +15,9 @@ public class SpotifyLikeApp2 {
     Long position;
     static String audioOps = "";
     static Clip audioClip;
-    static Boolean favorites;
+
+    // Assumes there are no favorited songs before starting the program
+    static Boolean favorites = false;
 
     // HashMaps used to get specific song data
     static HashMap<String,String> titleSearch = new HashMap<>();    
@@ -23,6 +25,7 @@ public class SpotifyLikeApp2 {
     static HashMap<String,String> getGenre = new HashMap<>();
     static Map<String,Long> getSongYear = new HashMap<String,Long>();
     static Map<String,Integer> playSongFile = new HashMap<String,Integer>();
+    static Map<Boolean,String> getFavorites = new HashMap<Boolean,String>();
     static String theSong;
 
 /* ======================
@@ -32,11 +35,11 @@ All Private Functions
 // Func: showAudioMenu()
 // Desc: Displays options within the play menu
 private static void showAudioMenu() {
-  System.out.println("*************************************************************************");
-  System.out.println("*-----------------------------------------------------------------------*");
-  System.out.println("*|||······ [P]lay  ···   p[A]use   ···   [S]top   ···   e[X]it ······|||*");
-  System.out.println("*-----------------------------------------------------------------------*");
-  System.out.println("*************************************************************************");
+  System.out.println("************************************************************************************************");
+  System.out.println("*----------------------------------------------------------------------------------------------*");
+  System.out.println("*|||···   L[I]ke / [D]islike  ··· [P]lay  ···   p[A]use   ···   [S]top   ···   e[X]it ······|||*");
+  System.out.println("*----------------------------------------------------------------------------------------------*");
+  System.out.println("************************************************************************************************");
 }
 
 // Func: handlePlayMenu()
@@ -45,6 +48,22 @@ private static void handlePlayMenu(JSONArray library, String st) {
 
   switch (st) {
     
+    case "d":
+    System.out.println("\n------------------------------> YOU DISLIKED THIS SONG <-------------------------------\n");
+    System.out.println("======================  Romoved from your favorites list  ======================");
+    audioClip.stop();
+    getFavorites.remove(favorites);
+    System.out.println(getFavorites);
+    break;
+
+    case "i":
+      favorites = true;
+      System.out.println("\n------------------------------> YOU LIKED THIS SONG! <-------------------------------\n");
+      System.out.println("======================  Added to your favorites list  ======================");
+      getFavorites.put((favorites),(theSong));
+      System.out.println(getFavorites.get(favorites));
+      // Excluded break statement so that liked song will play immediately after liking the song.
+
     case "p":
       System.out.println("\n------------------------------> NOW PLAYING <-------------------------------\n");
       System.out.println("================================================================================");

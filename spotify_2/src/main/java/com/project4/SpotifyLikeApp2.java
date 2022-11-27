@@ -135,7 +135,7 @@ public static void play(JSONArray library) {
 
 // Func: playMenuOptionsUI()
 // Desc: Displays options within the play menu
-public static void playMenuOptionsUI() {
+private static void playMenuOptionsUI() {
   System.out.println("***********************************************************");
   System.out.println("*---------------------------------------------------------*");
   System.out.println("*|||·······[P]lay  ···   p[A]use   ···   [S]top········|||*");

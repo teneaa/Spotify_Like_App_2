@@ -351,15 +351,20 @@ public static void handleMenu(String userInput, JSONArray library) {
   // Desc: Displays menu for the app; different layout when home is selected
   public static void menu(JSONArray library) {
     nowPlayingInfo(library);
-    System.out.println("\n---- SpotifyLikeApp ----\n");
-    System.out.println("[H]ome");
-    System.out.println("[S]earch by title");
-    System.out.println("[L]ibrary");
-    System.out.println("[F]avorites");
-    System.out.println("[Q]uit");
-
-    System.out.println("");
-    System.out.print("Enter q to Quit:  ");
+    System.out.println("\n|===================================|\n");
+    System.out.println("||···· Kinda · Like · Spotify · By · Tenea ····||\n");
+    System.out.println("|===================================|");
+    System.out.println("|       [H]ome                      |");
+    System.out.println("|-----------------------------------|");
+    System.out.println("|       [S]earch by title           |");
+    System.out.println("|-----------------------------------|");
+    System.out.println("|       [L]ibrary                   |");
+    System.out.println("|-----------------------------------|");
+    System.out.println("|       [F]avorites                 |");
+    System.out.println("|-----------------------------------|");
+    System.out.println("|       [Q]uit                      |");
+    System.out.println("|-----------------------------------|\n");
+    System.out.print("       Enter q to Quit:              ");
   }
 
   private static String basePath =

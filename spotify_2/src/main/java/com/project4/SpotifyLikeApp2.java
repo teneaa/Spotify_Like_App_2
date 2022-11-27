@@ -133,6 +133,25 @@ public static void play(JSONArray library) {
   }
 }
 
+// Func: nowPlayingInfo()
+// Desc: Shows all song information for the song that is currently playing
+
+public static void nowPlayingInfo(JSONArray library) {
+  for (Integer i = 0; i < library.size(); i++) {
+    if (i == playSongFile.get(theSong)) {
+      JSONObject songs = (JSONObject) library.get(i);
+      String song_name = (String) songs.get("name");
+      System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
+      System.out.print(" | Year: " + getSongYear.get(song_name));
+      System.out.print(" | Genre: " + getGenre.get(song_name));
+      System.out.println("| File: " + titleSearch.get(song_name) + "\n");
+    } else {
+      ;
+    }
+  }
+
+}
+
 // Func: handleCaseS()
 // Desc: handles searching for songs by title
 
@@ -218,6 +237,9 @@ public static void handleMenu(String userInput, JSONArray library) {
       System.out.println("\n-->Play<--\n");
       System.out.println("===============================================================================");
 
+      // insert text with all library info data except for index value
+      nowPlayingInfo(library);
+   
       play(library);
 
       break;

@@ -10,132 +10,24 @@ import org.json.simple.parser.*;
 // declares a class for the app
 public class SpotifyLikeApp2 {
     
-    // global variables for the app
-    static String status = "";
+    // All global variables for the app
+    String status;
     Long position;
+    static String audioOps = "";
     static Clip audioClip;
+    static Boolean favorites;
 
-    // HashMaps used to get specif song data
-    static HashMap<String,String> titleSearch = new HashMap<>();
+    // HashMaps used to get specific song data
+    static HashMap<String,String> titleSearch = new HashMap<>();    
     static HashMap<String,String> findArtist = new HashMap<>();
     static HashMap<String,String> getGenre = new HashMap<>();
     static Map<String,Long> getSongYear = new HashMap<String,Long>();
     static Map<String,Integer> playSongFile = new HashMap<String,Integer>();
     static String theSong;
 
-    // All Public Functions
-    //===============================================================================================
-
-    // Func: readJSONFile
-    // Desc: Reads a json file storing an array and returns an object
-    // that can be iterated over
-
-    public static JSONArray readJSONArrayFile(String fileName) {
-    // JSON parser object to parse read file
-    JSONParser jsonParser = new JSONParser();
-
-    JSONArray dataArray = null;
-
-    try (FileReader reader = new FileReader(fileName)) {
-      // Read JSON file
-      Object obj = jsonParser.parse(reader);
-
-      dataArray = (JSONArray) obj;
-
-      // loop through all items in json file to assing objects
-      // to string 
-      // Create JSON object
-
-      JSONObject Items;
-      for (Integer i = 0; i < dataArray.size(); i++) {
-
-        //Parses object pulls out the song tile and filename
-        Items = (JSONObject) dataArray.get(i);
-
-        String song = (String) Items.get("name");
-        String file = (String) Items.get("filename");
-        String artist = (String) Items.get("artist");
-        // Objects that still need to be placed into hashmaps:
-        String genre = (String) Items.get("genre");
-        Long releaseYear = (Long) Items.get("year");
-
-        Integer songNum = i;
-
-        //Place song titles and file names titleSearch HashMap
-        titleSearch.put((song),(file));
-
-        //Place song and artist into findArtst HashMap
-        findArtist.put((song),(artist));
-
-        //Place song and genre into getGenre HashMap
-        getGenre.put((song),(genre));
-
-        //Place song and release year into getSongYear HashMap
-        getSongYear.put((song),(releaseYear));
-
-        //Place song and index number into playSongFile HashMap
-        playSongFile.put((song),(songNum));
-      }
-      //System.out.println(dataArray);
-
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
-
-    return dataArray;
-}
-
-// Func: readAudioLibrary()
-// Desc: Gets information about the audio files
-
-// read the audio library of music
-public static JSONArray readAudioLibrary() {
-  final String jsonFileName = "audio-library1.json";
-  final String filePath = basePath + "/" + jsonFileName;
-
-  JSONArray jsonData = readJSONArrayFile(filePath);
-
-  System.out.println("\nReading the file " + filePath);
-
-  return jsonData;  
-}
-
-// Func: play() 
-// Desc: plays an audio file
-
-private static void play(JSONArray library) {
-
-  // open the audio file
-  // get the filePath and open a audio file
-  final Integer songIndex = playSongFile.get(theSong);
-  JSONObject obj = (JSONObject) library.get(songIndex);
-  final String filename = (String) obj.get("filename");
-  final String filePath = basePath + "/wav1/" + filename;
-  final File file = new File(filePath);
-
-  // stop the current song from playing, before playing the next one
-  if (audioClip != null) {
-    audioClip.close();
-  }
-
-  try {
-    // create clip
-    audioClip = AudioSystem.getClip();
-
-    // get input stream
-    final AudioInputStream in = AudioSystem.getAudioInputStream(file);
-
-    audioClip.open(in);
-    audioClip.setMicrosecondPosition(0);
-    audioClip.loop(Clip.LOOP_CONTINUOUSLY);
-  } catch (Exception e) {
-    e.printStackTrace();
-  }
-}
+/* ======================
+All Private Functions
+========================*/
 
 // Func: showAudioMenu()
 // Desc: Displays options within the play menu
@@ -211,16 +103,129 @@ private static void playMenu(String st, JSONArray library, Scanner sc) {
     st = sc.nextLine();
 
     // handle upper and lower case entries
-    status = st.toLowerCase();
+    st = st.toLowerCase();
 
     // let user handle audio
-    handlePlayMenu(library, status);
+    handlePlayMenu(library, st);
   }
 }
 
+    /* =====================
+    All Public Functions
+    ========================*/
+
+    // Func: readJSONFile
+    // Desc: Reads a json file storing an array and returns an object
+    // that can be iterated over
+    public static JSONArray readJSONArrayFile(String fileName) {
+
+      // JSON parser object to parse read file
+      JSONParser jsonParser = new JSONParser();
+  
+      JSONArray dataArray = null;
+  
+      try (FileReader reader = new FileReader(fileName)) {
+        // Read JSON file
+        Object obj = jsonParser.parse(reader);
+  
+        dataArray = (JSONArray) obj;
+  
+        // loop through all items in json file to assing objects
+        // to string 
+        // Create JSON object
+  
+        JSONObject Items;
+        for (Integer i = 0; i < dataArray.size(); i++) {
+  
+          //Parses object pulls out the song tile and filename
+          Items = (JSONObject) dataArray.get(i);
+  
+          String song = (String) Items.get("name");
+          String file = (String) Items.get("filename");
+          String artist = (String) Items.get("artist");
+          // Objects that still need to be placed into hashmaps:
+          String genre = (String) Items.get("genre");
+          Long releaseYear = (Long) Items.get("year");
+  
+          Integer songNum = i;
+  
+          //Place song titles and file names titleSearch HashMap
+          titleSearch.put((song),(file));
+  
+          //Place song and artist into findArtst HashMap
+          findArtist.put((song),(artist));
+  
+          //Place song and genre into getGenre HashMap
+          getGenre.put((song),(genre));
+  
+          //Place song and release year into getSongYear HashMap
+          getSongYear.put((song),(releaseYear));
+  
+          //Place song and index number into playSongFile HashMap
+          playSongFile.put((song),(songNum));
+        }
+        //System.out.println(dataArray);
+  
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+  
+      return dataArray;
+  }
+  
+  // Func: readAudioLibrary()
+  // Desc: Gets information about the audio files
+  public static JSONArray readAudioLibrary() {
+
+    final String jsonFileName = "audio-library1.json";
+    final String filePath = basePath + "/" + jsonFileName;
+  
+    // read the audio library of music
+    JSONArray jsonData = readJSONArrayFile(filePath);
+  
+    System.out.println("\nReading the file " + filePath);
+  
+    return jsonData;  
+  }
+  
+  // Func: play() 
+  // Desc: plays an audio file
+  private static void play(JSONArray library) {
+  
+    // open the audio file
+    // get the filePath and open a audio file
+    final Integer songIndex = playSongFile.get(theSong);
+    JSONObject obj = (JSONObject) library.get(songIndex);
+    final String filename = (String) obj.get("filename");
+    final String filePath = basePath + "/wav1/" + filename;
+    final File file = new File(filePath);
+  
+    // stop the current song from playing, before playing the next one
+    if (audioClip != null) {
+      audioClip.close();
+    }
+  
+    try {
+      // create clip
+      audioClip = AudioSystem.getClip();
+  
+      // get input stream
+      final AudioInputStream in = AudioSystem.getAudioInputStream(file);
+  
+      audioClip.open(in);
+      audioClip.setMicrosecondPosition(0);
+      audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
 // Func: nowPlayingInfo()
 // Desc: Shows all song information for the song that is currently playing
-
 public static void nowPlayingInfo(JSONArray library) {
   for (Integer i = 0; i < library.size(); i++) {
     if (i == playSongFile.get(theSong)) {
@@ -237,7 +242,6 @@ public static void nowPlayingInfo(JSONArray library) {
 
 // Func: handleCaseS()
 // Desc: handles searching for songs by title
-
 public static void handleCaseS(Scanner sc, JSONArray library) {
   System.out.println("\n-->Search by title<--\n");
   System.out.println("===============================================================================");
@@ -252,14 +256,14 @@ public static void handleCaseS(Scanner sc, JSONArray library) {
   // Find the song info by title and prompt user to play the song
   System.out.println("\nThe file for that song is: " + titleSearch.get(title) + "\n");
   
-  // Scanner for playmenu:
+  // Scanner and variable for playmenu:
   Scanner handleAudio = new Scanner(System.in);
-  playMenu(status,library, handleAudio);
+  playMenu(audioOps,library, handleAudio);
 
 }
+
 // Func: handleCaseL()
 // Desc: handles selecting songs from library index
-
 public static void handleCaseL(JSONArray library, Scanner sc) {
 
     System.out.println("\n-->Library<--\n");
@@ -276,8 +280,7 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
       System.out.println("| File: " + titleSearch.get(song_name) + "\n");
     }
 
-    // User input prompt for indicating which
-    // song from the list should be played
+    // User input prompt for indicating which song from the list should be played
     System.out.println("===============================================================================");
     System.out.println("Which song from the list would you like to listen to?"); 
     System.out.println("\nex: type '1' for Cement Lunch \n");
@@ -295,12 +298,18 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
 
     // Scanner for playmenu:
     Scanner handleAudio = new Scanner(System.in);
-    playMenu(status, library, handleAudio);
+    playMenu(audioOps, library, handleAudio);
 }
 
+// Func: isFavorite()
+// Desc: handles likes and dislike feature 
+public static void isFavorite(Scanner sc) {
+  if (favorites == true) {
+
+  }
+}
 // Func: handleMenu()
 // Desc: handles the user input for the app
-
 public static void handleMenu(String userInput, JSONArray library) {
   switch (userInput) {
     case "h":
@@ -318,12 +327,15 @@ public static void handleMenu(String userInput, JSONArray library) {
       Scanner numIn = new Scanner(System.in);  
       handleCaseL(library, numIn);
       break;
-
-    /*case "f":
+    
+    case "!":
       Scanner faveIn = new Scanner(System.in);
-      handleCaseF();  
+      isFavorite(faveIn);
+
+    case "f":
+      
+      // Show all favorites similar to library display
       break;
-    */
     
     case "q":
       System.out.println("\n-->Quit<--\n");
@@ -335,8 +347,23 @@ public static void handleMenu(String userInput, JSONArray library) {
     }
   }
 
+  // Func: menu()
+  // Desc: Displays menu for the app; different layout when home is selected
+  public static void menu(JSONArray library) {
+    nowPlayingInfo(library);
+    System.out.println("\n---- SpotifyLikeApp ----\n");
+    System.out.println("[H]ome");
+    System.out.println("[S]earch by title");
+    System.out.println("[L]ibrary");
+    System.out.println("[F]avorites");
+    System.out.println("[Q]uit");
+
+    System.out.println("");
+    System.out.print("Enter q to Quit:  ");
+  }
+
   private static String basePath =
-    "/Users/teneaallen/Desktop/Fall 2022 /Java Programming/Assignments/Week_12/Spotify_Project/Spotify_Like_App_2/spotify_2/spotify_app_files";
+  "/Users/teneaallen/Desktop/Fall 2022 /Java Programming/Assignments/Week_12/Spotify_Project/Spotify_Like_App_2/spotify_2/spotify_app_files";
 
   // "main" makes this class a java app that can be executed
   public static void main(final String[] args) {
@@ -364,20 +391,5 @@ public static void handleMenu(String userInput, JSONArray library) {
 
     // close the scanner
     menuInput.close();
-  }
-
-  // Func: menu()
-  // Desc: Displays menu for the app; different layout when home is selected
-  public static void menu(JSONArray library) {
-    nowPlayingInfo(library);
-    System.out.println("\n---- SpotifyLikeApp ----\n");
-    System.out.println("[H]ome");
-    System.out.println("[S]earch by title");
-    System.out.println("[L]ibrary");
-    System.out.println("[F]avorites");
-    System.out.println("[Q]uit");
-
-    System.out.println("");
-    System.out.print("Enter q to Quit:  ");
   }
 }

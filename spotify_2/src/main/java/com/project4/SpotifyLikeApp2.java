@@ -346,9 +346,9 @@ public static void isFavorite(JSONArray library) {
   System.out.println("Favs after for loop:   " + getFavs.get(true));
 }
 
-// Func: showFavorites()
+// Func: showFavs()
 // Desc: displays all favorite songs and gives user option to play a song from the list
-public static void showFavorites() {
+public static void showFavs() {
 
   // Use for loop to display json file data
   if ((getFavs.get(true)).size() == 0 && (getFavs).get(false).size() == 0) {
@@ -357,6 +357,15 @@ public static void showFavorites() {
     System.out.println("the library catalog to add as favorites.\n");
 
   } else if (getFavs.get(true).size() > 0) {
+
+    for (Integer i = 0; i < getFavs.get(true).size(); i++) {
+      String audio = getFavs.get(true).get(i);
+      System.out.print(i + 1 + "| ");
+      System.out.print("Song: " +  audio + "| Artist: " + findArtist.get(audio));
+      System.out.print(" | Year: " + getSongYear.get(audio));
+      System.out.print(" | Genre: " + getGenre.get(audio));
+      System.out.println("| File: " + titleSearch.get(audio) + "\n");
+    }
     System.out.println(getFavs.get(true));
   }
 }
@@ -388,7 +397,7 @@ public static void handleMenu(String userInput, JSONArray library) {
     case "f":
       
       // Show all favorites similar to library display
-      showFavorites();
+      showFavs();
       break;
     
     case "q":

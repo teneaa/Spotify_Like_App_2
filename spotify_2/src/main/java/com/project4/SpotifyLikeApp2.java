@@ -73,7 +73,7 @@ private static void handlePlayMenu(JSONArray library, String st) {
     case "i":
       System.out.println("\n------------------------------> YOU LIKED THIS SONG! <-------------------------------\n");
       System.out.println("======================  Added to your favorites list  ======================");
-      isFavorite(library);
+      isFav(library);
       // Excluded break statement so that liked song will play immediately after liking the song.
 
     case "p":
@@ -332,18 +332,19 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
     playMenu(audioOps, library, handleAudio);
 }
 
-// Func: isFavorite()
+// Func: isFav()
 // Desc: handles likes and dislike feature 
-public static void isFavorite(JSONArray library) {
+public static void isFav(JSONArray library) {
   // populate getFavs for all songs
   for (Integer i = 0; i < library.size(); i++) {
+
     if (songFile.get(theSong) == i) {
       favorites = true;
+      
+      // Add matching song to arraylist inside hashmap
       getFavs.get(true).add(songByIndex.get(i));
-      System.out.println(getFavs.get(true));
     }
   }
-  System.out.println("Favs after for loop:   " + getFavs.get(true));
 }
 
 // Func: showFavs()
@@ -392,7 +393,7 @@ public static void handleMenu(String userInput, JSONArray library) {
     
     case "!":
       //Scanner faveIn = new Scanner(System.in);
-      //isFavorite(faveIn);
+      //isFav(faveIn);
 
     case "f":
       

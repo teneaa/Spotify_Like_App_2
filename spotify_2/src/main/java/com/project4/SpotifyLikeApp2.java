@@ -11,8 +11,8 @@ import org.json.simple.parser.*;
 public class SpotifyLikeApp2 {
     
     // All global variables for the app
-    String status;
-    Long position;
+    static String status;
+    static Long position;
     static String audioOps = "";
     static String theSong;
     static Clip audioClip;
@@ -29,132 +29,258 @@ public class SpotifyLikeApp2 {
     static Map<Integer,String> songByIndex = new HashMap<Integer,String>();
 
     // getFavs acts a multiValue hashmap for traking true/ false for isFavorite var
-    static Map<Boolean,ArrayList<String>> getFavs = new HashMap<Boolean,ArrayList<String>>();
+    static Map<Boolean, ArrayList<String>> getFavs = new HashMap<Boolean, ArrayList<String>>();
 
-/* ======================
-All Private Functions
-========================*/
+    /*
+     * ======================
+     * All Private Functions
+     * ========================
+     */
 
-// Func: forTrue()
-// Desc: populates getFavs with (true, songs)
-private static void forTrue() {
-  getFavs.put(true, new ArrayList<String>());
-}
+    // Func: forTrue()
+    // Desc: populates getFavs with (true, songs)
+    private static void forTrue() {
+      getFavs.put(true, new ArrayList<String>());
+    }
 
-// Func: forFalse()
-// Desc: populates getFavs with (false, songs)
-private static void forFalse() {
-  getFavs.put(false, new ArrayList<String>());
-}
-// Func: showAudioMenu()
-// Desc: Displays options within the play menu
-private static void showAudioMenu() {
-  System.out.println("************************************************************************************************");
-  System.out.println("*----------------------------------------------------------------------------------------------*");
-  System.out.println("*|||···   L[I]ke / [D]islike  ··· [P]lay  ···   p[A]use   ···   [S]top   ···   e[X]it ······|||*");
-  System.out.println("*----------------------------------------------------------------------------------------------*");
-  System.out.println("************************************************************************************************");
-}
+    //Func: forFalse()
+    //Desc: populates getFavs with (false, songs)
+    private static void forFalse() {
+      getFavs.put(false, new ArrayList<String>());
+    }
 
-// Func: handlePlayMenu()
-// Desc: Handles options for manipulating audio
-private static void handlePlayMenu(JSONArray library, String st) {
+    // Func: pickMenuOrDisplay()
+    // Desc: Decides which menu to display when program begins
+    static private void pickMenuOrDisplay(JSONArray lib, String st) {
+      // condition for displaying home menu vs main menu
+      if (st.equals("h")) {
+        homeMenu(lib);
+      } else if (st.equals("f")) {
+        showFavs();
+      } else {
+        menu(lib);
+      }
+    }
 
-  switch (st) {
-    
-    case "d":
-    System.out.println("================================================================================");
-    System.out.println("\n· · · · · · · · · · · ·  YOU DISLIKED THIS SONG · · · · · · · · · · · · · · ·\n");
-    System.out.println("\n· · · · · · · " + theSong + " has been removed your Favorites.· · · · · · · · ·\n");
-    System.out.println("================================================================================");
-    audioClip.stop();
+    // Func: userQuits()
+    // Desc: Shows thank you message when user quits the program
+    private static void userQuits() {
 
-    isFavorite = false;
+      System.out.println("\n********************************************************************************");
+      System.out.println("* · · · · · · · · · · · ·  THANK YOU FOR LISTENING WITH · · · · · · · · · ·  · *");
+      System.out.println("* · · · · · · · · · · · · ·   KINDA · LIKE · SPOTIFY   · · · · · · · · · · · · *");
+      System.out.println("********************************************************************************\n");
+    }
 
-    // Test to see if song was removed from getFavs(true) arraysEsports can offer more benefits than their physical counterparts and because of this schools should plan on implementing Esports into their programs. 
-    System.out.println(getFavs);
-    break;
+    // Func: userPlaysSong()
+    // Desc: Display announcement about song status 
+    private static void userPlaysSong(JSONArray lib) {
 
-    case "i":
-      System.out.println("=============================================================================");
-      System.out.println("\n· · · · · · · · · · · · · YOU LIKED THIS SONG! · · · · · · · · · · · · · \n");
-      System.out.println("\n· · · · · · · " + theSong + " has been added to your Favorites.· · · · · · ·\n");
-      System.out.println("=============================================================================");
-      isFav(library);
-      // Excluded break statement so that liked song will play immediately after liking the song.
+          System.out.println("\n==================================================================================");
+          System.out.println("|| · · · · · · · · · · · · · ·  NOW PLAYING · · · · · · · · · · · · · · · · · · ||");
+          System.out.println("|| · · · · · · · · · · · · · · " + theSong + "· · · · · · · · · · · · · · · · · ·  ||");
+          System.out.println("==================================================================================\n");
+          play(lib);
+    }
 
-    case "p":
-    System.out.println("==================================================================================");
-      System.out.println("\n· · · · · · · · · · · · · · ·  NOW PLAYING · · · · · · · · · · · · · · · · ·\n");
-      System.out.println("\n· · · · · · · · · · · · · · · · " + theSong + "· · · · · · · · · · · · · · · · \n");
-      System.out.println("================================================================================");
-      play(library);
-      break;
-    
-    case "a":
+    // Func: rewind()
+  // Desc: Rewinds current audio file back 5 seconds
+  private static void rewind(JSONArray library) {
+    position = audioClip.getMicrosecondPosition();
+    Long rrAmount = 5000000L;
+    audioClip.setMicrosecondPosition(position - rrAmount);
+  }
+
+  // Func: fastforward()
+  // Desc: Fastforwards current audio file forward 5 seconds
+  private static void fastforward(JSONArray library) {
+    position = audioClip.getMicrosecondPosition() * 1000000L;
+    Long ffAmount = 5000000L;
+    audioClip.setMicrosecondPosition(position + ffAmount);
+  }
+
+  // Func: play() 
+  // Desc: plays an audio file
+  private static void play(JSONArray library) {
+  
+    // open the audio file
+    // get the filePath and open a audio file
+    final Integer songIndex = songFile.get(theSong);
+    JSONObject obj = (JSONObject) library.get(songIndex);
+    final String filename = (String) obj.get("filename");
+    final String filePath = basePath + "/wav1/" + filename;
+    final File file = new File(filePath);
+  
+    // stop the current song from playing, before playing the next one
+    if (audioClip != null) {
+      audioClip.close();
+    }
+  
+    try {
+      // create clip
+      audioClip = AudioSystem.getClip();
+  
+      // get input stream
+      final AudioInputStream in = AudioSystem.getAudioInputStream(file);
+  
+      audioClip.open(in);
+      audioClip.setMicrosecondPosition(0);
+      audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    // Determine status of current song
+    status = "playing";
+  }
+
+    // Func: userPausedSong()
+    // Desc: Display announcement about song status
+    private static void userPausedSong() {
+
       if (audioClip == null) {
         System.out.println("There is no audio currently playing.\n\nPress 'p' to play a song first");
         System.out.println("or press 'x' to exit.\n\n");
       } else {
-        System.out.println("================================================================================");
-        System.out.println("\n· · · · · · · · · · · · · · · · PAUSED · · · · · · · · · · · · · · · · · · ·\n");
-        System.out.println("\n· · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · ·\n");
-        System.out.println("================================================================================");
-        //Place holder for pause method
+        System.out.println("\n================================================================================");
+        System.out.println("|| · · · · · · · · · · · · · · · PAUSED · · · · · · · · · · · · · · · · · · · ||");
+        System.out.println("|| · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · · ||");
+        System.out.println("================================================================================\n");
+        // Place holder for pause method
         audioClip.close();
-        //Insert pause method here
+        // Insert pause method here
+        position = audioClip.getMicrosecondPosition();
+        audioClip.setMicrosecondPosition(position);
       }
-        
-      break;
+    }
 
-    case "s":
-      
+    // Func: userStoppedSong()
+    // Desc: Display announcent about song status
+    private static void userStoppedSong() {
+
       // Handle error when user chooses "stopped", but no song is playing
       if (audioClip == null) {
         System.out.println("There is no audio currently playing.\n\nPress 'p' to play a song first");
         System.out.println("or press 'x' to exit.\n\n");
       } else {
-        System.out.println("================================================================================");
-        System.out.println("\n· · · · · · · · · · · · · · · · STOPPED · · · · · · · · · · · · · · · · · ·\n");
-        System.out.println("\n· · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · ·\n");
-        System.out.println("================================================================================");
+        System.out.println("\n================================================================================");
+        System.out.println("||· · · · · · · · · · · · · · · · STOPPED · · · · · · · · · · · · · · · · · · ||");
+        System.out.println("||· · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · ·||");
+        System.out.println("================================================================================\n");
         audioClip.stop();
       }
-      
-      break;
+    }
 
-    case "x":
-      
+    // Func: userLikedSong()
+    // Desc: Displays announced about liked song
+    private static void userLikedSong(JSONArray lib) {
+
+      System.out.println("=============================================================================");
+      System.out.println("· · · · · · · · · · · · · YOU LIKED THIS SONG! · · · · · · · · · · · · · · · ");
+      System.out.println("\n· · · · · · · " + theSong + " has been added to your Favorites.· · · · · · ·\n");
+      System.out.println("=============================================================================");
+      isFav(lib);
+    }
+
+    // Func: exitsPlayMenu()
+    // Desc: Display announcement when leaving play menu
+    private static void exitsPlayMenu() {
       // Exits play menu without stopping song play
-      System.out.println("================================================================================");
-      System.out.println("\n· · · · · · · · · · · · ·  EXITED PLAY MENU · · · · · · · · · · · · · · · · ·\n");
-      System.out.println("\n· · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · ·\n");
-      System.out.println("================================================================================");
-   
-    default: 
-      break;
-  }
-}
+      System.out.println("\n================================================================================");
+      System.out.println("||· · · · · · · · · · · · ·  EXITED PLAY MENU · · · · · · · · · · · · · · · · ||");
+      System.out.println("||· · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ||");
+      System.out.println("================================================================================\n");
+    }
 
-// Func: playMenu()
-// Desc: Handles options for manipulating audio and provides audio status info
-private static void playMenu(String st, JSONArray library, Scanner sc) {
+    // Func: showAudioMenu()
+    // Desc: Displays options within the play menu
+    private static void showAudioMenu() {
+      System.out.println("\n************************************************************************************************");
+      System.out.println("*----------------------------------------------------------------------------------------------*");
+      System.out.println("*|||···   L[I]ke / [D]islike  ··· [P]lay  ···   p[A]use   ···   [S]top   ···   e[X]it ······|||*");
+      System.out.println("*----------------------------------------------------------------------------------------------*");
+      System.out.println("************************************************************************************************\n");
+    }
 
-  // Display UI audio options menu
-  showAudioMenu();
+    // Func: handlePlayMenu()
+    // Desc: Handles options for manipulating audio
+    private static void handlePlayMenu(JSONArray library, String st) {
 
-  while (!st.equals("x")) {
+      switch (st) {
 
-    // get user input
-    st = sc.nextLine();
+        case "d":
+          System.out.println("================================================================================");
+          System.out.println("\n· · · · · · · · · · · ·  YOU DISLIKED THIS SONG · · · · · · · · · · · · · · ·\n");
+          System.out.println("\n· · · · · · · " + theSong + " has been removed your Favorites.· · · · · · · · ·\n");
+          System.out.println("================================================================================");
+          audioClip.stop();
 
-    // handle upper and lower case entries
-    st = st.toLowerCase();
+          isFavorite = false;
 
-    // let user handle audio
-    handlePlayMenu(library, st);
-  }
-}
+          // Test to see if song was removed from getFavs(true) arrays
+          System.out.println(getFavs);
+          break;
+
+        case "i":
+
+          userLikedSong(library);
+          // Excluded break statement so that liked song will play immediately after
+          // liking the song.
+
+        case "p":
+
+          userPlaysSong(library);
+          break;
+
+        case "a":
+
+          userPausedSong();
+          break;
+
+        case "r":
+          
+          rewind(library);
+          break;
+
+        case "f":
+
+        fastforward(library);
+        break;
+
+        case "s":
+
+          userStoppedSong();
+          break;
+
+        case "x":
+
+        // Redirects user back to the home menu
+        exitsPlayMenu();
+
+        default:
+        break;
+      }
+    }
+
+    // Func: playMenu()
+    // Desc: Handles options for manipulating audio and provides audio status info
+    private static void playMenu(String st, JSONArray library, Scanner sc) {
+
+      // Display UI audio options menu
+      showAudioMenu();
+
+      while (!st.equals("x")) {
+
+        // get user input
+        st = sc.nextLine();
+
+        // handle upper and lower case entries
+        st = st.toLowerCase();
+
+        // let user handle audio
+        handlePlayMenu(library, st);
+      }
+    }
 
     /* =====================
     All Public Functions
@@ -221,7 +347,7 @@ private static void playMenu(String st, JSONArray library, Scanner sc) {
       }
   
       return dataArray;
-  }
+    }
   
   // Func: readAudioLibrary()
   // Desc: Gets information about the audio files
@@ -237,46 +363,15 @@ private static void playMenu(String st, JSONArray library, Scanner sc) {
   
     return jsonData;  
   }
-  
-  // Func: play() 
-  // Desc: plays an audio file
-  private static void play(JSONArray library) {
-  
-    // open the audio file
-    // get the filePath and open a audio file
-    final Integer songIndex = songFile.get(theSong);
-    JSONObject obj = (JSONObject) library.get(songIndex);
-    final String filename = (String) obj.get("filename");
-    final String filePath = basePath + "/wav1/" + filename;
-    final File file = new File(filePath);
-  
-    // stop the current song from playing, before playing the next one
-    if (audioClip != null) {
-      audioClip.close();
-    }
-  
-    try {
-      // create clip
-      audioClip = AudioSystem.getClip();
-  
-      // get input stream
-      final AudioInputStream in = AudioSystem.getAudioInputStream(file);
-  
-      audioClip.open(in);
-      audioClip.setMicrosecondPosition(0);
-      audioClip.loop(Clip.LOOP_CONTINUOUSLY);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
 
-// Func: nowPlayingInfo()
+// Func: currentTrack()
 // Desc: Shows all song information for the song that is currently playing
-public static void nowPlayingInfo(JSONArray library) {
+public static void currentTrack(JSONArray library) {
   for (Integer i = 0; i < library.size(); i++) {
     if (i == songFile.get(theSong)) {
       JSONObject songs = (JSONObject) library.get(i);
       String song_name = (String) songs.get("name");
+      System.out.print("\n\nCurrent Track:  ");
       System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
       System.out.print(" | Year: " + getSongYear.get(song_name));
       System.out.print(" | Genre: " + getGenre.get(song_name));
@@ -289,8 +384,9 @@ public static void nowPlayingInfo(JSONArray library) {
 // Func: handleCaseS()
 // Desc: handles searching for songs by title
 public static void handleCaseS(Scanner sc, JSONArray library) {
-  System.out.println("\n-->Search by title<--\n");
-  System.out.println("===============================================================================");
+  System.out.println("================================================================================");
+  System.out.println("|| · · · · · · · · · · · · · ·  SEARCH · BY · TITLE · · · · · · · · · · · · · ||");
+  System.out.println("================================================================================");
   System.out.println("\nEnter the name of a song: \n");
 
   // get title of a song
@@ -299,10 +395,11 @@ public static void handleCaseS(Scanner sc, JSONArray library) {
   // Assign theSong to the title that user input
   theSong = title;
 
-  // Find the song info by title and prompt user to play the song
+  // Finds the song info by title and displays song file info
   System.out.println("\nThe file for that song is: " + titleSearch.get(title) + "\n");
   
   // Scanner and variable for playmenu:
+  // Gives users options for manipulating audio
   Scanner handleAudio = new Scanner(System.in);
   playMenu(audioOps,library, handleAudio);
 
@@ -312,8 +409,9 @@ public static void handleCaseS(Scanner sc, JSONArray library) {
 // Desc: handles selecting songs from library index
 public static void handleCaseL(JSONArray library, Scanner sc) {
 
-    System.out.println("\n-->Library<--\n");
-    System.out.println("===============================================================================");
+  System.out.println("\n================================================================================");
+  System.out.println("|| · · · · · · · · · · · · · ·  MUSIC · LIBRARY · · · · · · · · · · · · · · · ||");
+  System.out.println("================================================================================\n");
 
     // Use for loop to display json file data
     for (Integer i = 0; i < library.size(); i++) {
@@ -336,13 +434,15 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
     // Locates song indexed in the library
     JSONObject song = (JSONObject) library.get(pickNum - 1);
     
+    // Outputs chosen song for user to view
     String songPick = (String) song.get("name");
-    System.out.println("\nYou chose:\n================================ ");
-    System.out.println("||     " + songPick + "      ||");
-    System.out.println("================================\n");
+    System.out.println("You chose:  =================================");
+    System.out.println("              ||     " + songPick + "         ||");
+    System.out.println("            =================================");
     theSong = songPick;
 
-    // Scanner for playmenu:
+    // Scanner for playmenu
+    // Gives users options for manipulating audio
     Scanner handleAudio = new Scanner(System.in);
     playMenu(audioOps, library, handleAudio);
 }
@@ -368,27 +468,37 @@ public static void showFavs() {
 
   // Use for loop to display json file data
   if ((getFavs.get(true)).size() == 0 && (getFavs).get(false).size() == 0) {
+    System.out.println("\n||============================================||");
+    System.out.println("|| ············  FAVORTIES!  ·················||");
+    System.out.println("||············································||");
+    System.out.println("||============================================||");
     System.out.println("\nYou have not added any songs to this section yet.\n");
     System.out.println("Try searching for songs or picking a song from\n");
-    System.out.println("the library catalog to add as isFavorite.\n");
+    System.out.println("the library catalog to add as isFavorite.\n\n");
 
   } else if (getFavs.get(true).size() > 0) {
 
-    System.out.println("\n|============================================|\n");
-    System.out.println("|| ············  FAVORTIES!  ···············||\n");
+    System.out.println("\n||============================================||");
+    System.out.println("|| ············  FAVORTIES!  ·················||");
 
     for (Integer i = 0; i < getFavs.get(true).size(); i++) {
       String audio = getFavs.get(true).get(i);
       System.out.print("\n               " +  audio + "                    \n");
     }
-    System.out.println("\n  ···········································  ");
-    System.out.println("|=============================================|\n");
+    System.out.println("||············································||");
+    System.out.println("||============================================||\n\n");
   }
 }
 
 // Func: homeMenu()
 // Desc: Displays home menu for the app
 public static void homeMenu(JSONArray library) {
+
+  //Condition for showing current song
+  if (audioClip != null) {
+    currentTrack(library);
+  }
+
   System.out.println("\n*****************************************************************************");
   System.out.println("*                       ······  H · O · M · E ······                        *");
   System.out.println("*---------------------------------------------------------------------------*"); 
@@ -403,7 +513,7 @@ public static void homeMenu(JSONArray library) {
   System.out.println("*---------------------------------------------------------------------------*"); 
   System.out.println("*|||··········                [E]XIT                           ··········|||*");
   System.out.println("*---------------------------------------------------------------------------*");
-  System.out.println("*****************************************************************************");
+  System.out.println("*****************************************************************************\n");
 }
 
 // Func: handleMenu()
@@ -411,8 +521,9 @@ public static void homeMenu(JSONArray library) {
 public static void handleMenu(String userInput, JSONArray library) {
   switch (userInput) {
     case "h":
-      homeMenu(library);
+      // Displays home menu based on pickMenuOrDisplay()
       break;
+
     case "s":
 
       Scanner input = new Scanner(System.in);
@@ -424,22 +535,14 @@ public static void handleMenu(String userInput, JSONArray library) {
       Scanner numIn = new Scanner(System.in);  
       handleCaseL(library, numIn);
       break;
-    
-    case "!":
-      //Scanner faveIn = new Scanner(System.in);
-      //isFav(faveIn);
 
     case "f":
       
-      // Show all Favorites added by user
-      showFavs();
+      // Shows favorites or error message based on menue or display
       break;
     
     case "q":
-    System.out.println("********************************************************************************");
-    System.out.println("* · · · · · · · · · · · ·  THANK YOU FOR LISTENING WITH · · · · · · · · · ·  · *");
-    System.out.println("* · · · · · · · · · · · · ·   KINDA · LIKE · SPOTIFY   · · · · · · · · · · · · *");
-    System.out.println("********************************************************************************");
+      userQuits();
       break;
       
     default: 
@@ -450,9 +553,13 @@ public static void handleMenu(String userInput, JSONArray library) {
   // Func: menu()
   // Desc: Displays menu for the app; different layout when home is selected
   public static void menu(JSONArray library) {
-    nowPlayingInfo(library);
+
+    //Condition for showing most recently played song
+    if (audioClip != null && status == "playing") {
+      currentTrack(library);
+    }
     
-    System.out.println("\n*****************************************************************************");
+    System.out.println("\n\n*****************************************************************************");
     System.out.println("*                    ·······  KINDA · LIKE · SPOTIRY ·······                *");
     System.out.println("*---------------------------------------------------------------------------*"); 
     System.out.println("*|||··········                [H]ome                           ··········|||*");
@@ -479,7 +586,7 @@ public static void handleMenu(String userInput, JSONArray library) {
   // "main" makes this class a java app that can be executed
   public static void main(final String[] args) {
 
-    // Creates new arrays for when isFavorite == true and isFavorite == false
+    // Creates new arrays for when isFavorite == true and when isFavorite == false
     forTrue();
     forFalse();
 
@@ -493,20 +600,17 @@ public static void handleMenu(String userInput, JSONArray library) {
 
     while (!userInput.equals("q")) {
 
-      if(userInput.equals("h")) {
-        homeMenu(library);
-      } else {
-        menu(library);
-      }
+      // get menu()
+      pickMenuOrDisplay(library, userInput);
         
-        // get user input
-        userInput = menuInput.nextLine();
+      // get user input
+      userInput = menuInput.nextLine();
 
-        // handle upper and lower case entries
-        userInput = userInput.toLowerCase();
+      // handle upper and lower case entries
+      userInput = userInput.toLowerCase();
 
-        // do something
-        handleMenu(userInput, library);
+      // do something
+      handleMenu(userInput, library);
     }
 
     // close the scanner

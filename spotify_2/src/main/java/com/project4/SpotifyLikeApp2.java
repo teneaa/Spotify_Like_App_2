@@ -28,23 +28,23 @@ public class SpotifyLikeApp2 {
     static Map<String,Integer> songFile = new HashMap<String,Integer>();
     static Map<Integer,String> songByIndex = new HashMap<Integer,String>();
 
-    // getFavorites acts a multiValue hashmap for traking true/ false for favorites var
-    static Map<Boolean,ArrayList<String>> getFavorites = new HashMap<Boolean,ArrayList<String>>();
+    // getFavs acts a multiValue hashmap for traking true/ false for favorites var
+    static Map<Boolean,ArrayList<String>> getFavs = new HashMap<Boolean,ArrayList<String>>();
 
 /* ======================
 All Private Functions
 ========================*/
 
 // Func: forTrue()
-// Desc: populates getFavorites with (true, songs)
+// Desc: populates getFavs with (true, songs)
 private static void forTrue() {
-  getFavorites.put(true, new ArrayList<String>());
+  getFavs.put(true, new ArrayList<String>());
 }
 
 // Func: forFalse()
-// Desc: populates getFavorites with (false, songs)
+// Desc: populates getFavs with (false, songs)
 private static void forFalse() {
-  getFavorites.put(false, new ArrayList<String>());
+  getFavs.put(false, new ArrayList<String>());
 }
 // Func: showAudioMenu()
 // Desc: Displays options within the play menu
@@ -66,8 +66,8 @@ private static void handlePlayMenu(JSONArray library, String st) {
     System.out.println("\n------------------------------> YOU DISLIKED THIS SONG <-------------------------------\n");
     System.out.println("======================  Romoved from your favorites list  ======================");
     audioClip.stop();
-    getFavorites.remove(favorites);
-    System.out.println(getFavorites);
+    getFavs.remove(favorites);
+    System.out.println(getFavs);
     break;
 
     case "i":
@@ -335,38 +335,29 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
 // Func: isFavorite()
 // Desc: handles likes and dislike feature 
 public static void isFavorite(JSONArray library) {
-  // populate getFavorites for all songs
+  // populate getFavs for all songs
   for (Integer i = 0; i < library.size(); i++) {
     if (songFile.get(theSong) == i) {
       favorites = true;
-      getFavorites.get(true).add(songByIndex.get(i));
-      System.out.println(getFavorites.get(true));
+      getFavs.get(true).add(songByIndex.get(i));
+      System.out.println(getFavs.get(true));
     }
   }
+  System.out.println("Favs after for loop:   " + getFavs.get(true));
 }
 
 // Func: showFavorites()
 // Desc: displays all favorite songs and gives user option to play a song from the list
-public static void showFavorites(JSONArray library) {
+public static void showFavorites() {
 
   // Use for loop to display json file data
-  for (Integer i = 0; i < library.size(); i++) {
-    if (songFile.get(getFavorites.get(true).get(i)) == i) {
+  if ((getFavs.get(true)).size() == 0 && (getFavs).get(false).size() == 0) {
+    System.out.println("\nYou have not added any songs to this section yet.\n");
+    System.out.println("Try searching for songs or picking a song from\n");
+    System.out.println("the library catalog to add as favorites.\n");
 
-      JSONObject songs = (JSONObject) library.get(i);
-      String song_name = (String) songs.get("name");
-      System.out.print(i + 1 + "| ");
-      System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
-      System.out.print(" | Year: " + getSongYear.get(song_name));
-      System.out.print(" | Genre: " + getGenre.get(song_name));
-      System.out.println("| File: " + titleSearch.get(song_name) + "\n");
-
-    } else if (getFavorites.get(false) != null) {
-
-      System.out.println("\nYou have no favorites saved at this time\n");
-      System.out.println("Try searching for a song or browsing the library catalog\n");
-      System.out.println("to pick songs to add to this list\n");
-    }
+  } else if (getFavs.get(true).size() > 0) {
+    System.out.println(getFavs.get(true));
   }
 }
 
@@ -397,7 +388,7 @@ public static void handleMenu(String userInput, JSONArray library) {
     case "f":
       
       // Show all favorites similar to library display
-      showFavorites(library);
+      showFavorites();
       break;
     
     case "q":

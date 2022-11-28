@@ -389,12 +389,21 @@ public static void showFavs() {
 // Func: homeMenu()
 // Desc: Displays home menu for the app
 public static void homeMenu(JSONArray library) {
-  System.out.println("************************************************************************************************");
-  System.out.println("*                                        ·  H · O · M · E ·                                     ");
-  System.out.println("*----------------------------------------------------------------------------------------------*");
-  System.out.println("*|||···   [F]AVORITES  ··· [L]IBRARY  ···   [S]EARCH · BY · TITLE   ···   [E]XIT ···········|||*");
-  System.out.println("*----------------------------------------------------------------------------------------------*");
-  System.out.println("************************************************************************************************");
+  System.out.println("\n*****************************************************************************");
+  System.out.println("*                       ······  H · O · M · E ······                        *");
+  System.out.println("*---------------------------------------------------------------------------*"); 
+  System.out.println("*|||··········                [F]AVORITES                      ··········|||*");
+  System.out.println("*---------------------------------------------------------------------------*");
+  System.out.println("*---------------------------------------------------------------------------*"); 
+  System.out.println("*|||··········                [L]IBRARY                        ··········|||*");
+  System.out.println("*---------------------------------------------------------------------------*");
+  System.out.println("*---------------------------------------------------------------------------*"); 
+  System.out.println("*|||··········                [S]EARCH · BY · TITLE            ··········|||*");
+  System.out.println("*---------------------------------------------------------------------------*");
+  System.out.println("*---------------------------------------------------------------------------*"); 
+  System.out.println("*|||··········                [E]XIT                           ··········|||*");
+  System.out.println("*---------------------------------------------------------------------------*");
+  System.out.println("*****************************************************************************");
 }
 
 // Func: handleMenu()
@@ -427,10 +436,10 @@ public static void handleMenu(String userInput, JSONArray library) {
       break;
     
     case "q":
-    System.out.println("================================================================================");
-    System.out.println("\n· · · · · · · · · · · · ·  THANK YOU FOR LISTENING WITH · · · · · · · · · · · · · · · ·\n");
-    System.out.println("\n· · · · · · · · · · · · · ·   KINDA · LIKE · SPOTIFY   · · · · · · · · · · · · · · ·\n");
-    System.out.println("================================================================================");
+    System.out.println("********************************************************************************");
+    System.out.println("* · · · · · · · · · · · ·  THANK YOU FOR LISTENING WITH · · · · · · · · · ·  · *");
+    System.out.println("* · · · · · · · · · · · · ·   KINDA · LIKE · SPOTIFY   · · · · · · · · · · · · *");
+    System.out.println("********************************************************************************");
       break;
       
     default: 
@@ -442,20 +451,26 @@ public static void handleMenu(String userInput, JSONArray library) {
   // Desc: Displays menu for the app; different layout when home is selected
   public static void menu(JSONArray library) {
     nowPlayingInfo(library);
-    System.out.println("\n|===================================|\n");
-    System.out.println("||···· Kinda · Like · Spotify · By · Tenea ····||\n");
-    System.out.println("|===================================|");
-    System.out.println("|       [H]ome                      |");
-    System.out.println("|-----------------------------------|");
-    System.out.println("|       [S]earch by title           |");
-    System.out.println("|-----------------------------------|");
-    System.out.println("|       [L]ibrary                   |");
-    System.out.println("|-----------------------------------|");
-    System.out.println("|       [F]avorites                 |");
-    System.out.println("|-----------------------------------|");
-    System.out.println("|       [Q]uit                      |");
-    System.out.println("|-----------------------------------|\n");
-    System.out.print("       Enter q to Quit:              ");
+    
+    System.out.println("\n*****************************************************************************");
+    System.out.println("*                    ·······  KINDA · LIKE · SPOTIRY ·······                *");
+    System.out.println("*---------------------------------------------------------------------------*"); 
+    System.out.println("*|||··········                [H]ome                           ··········|||*");
+    System.out.println("*---------------------------------------------------------------------------*");
+    System.out.println("*---------------------------------------------------------------------------*"); 
+    System.out.println("*|||··········                [S]earch by title                ··········|||*");
+    System.out.println("*---------------------------------------------------------------------------*");
+    System.out.println("*---------------------------------------------------------------------------*"); 
+    System.out.println("*|||··········                [L]ibrary                        ··········|||*");
+    System.out.println("*---------------------------------------------------------------------------*");
+    System.out.println("*---------------------------------------------------------------------------*"); 
+    System.out.println("*|||··········                [F]avorites                      ··········|||*");
+    System.out.println("*---------------------------------------------------------------------------*");
+    System.out.println("*---------------------------------------------------------------------------*"); 
+    System.out.println("*|||··········                [Q]uit                           ··········|||*");
+    System.out.println("*---------------------------------------------------------------------------*");
+    System.out.println("*****************************************************************************\n");
+    System.out.print("\n                            Enter q to Quit:              ");
   }
 
   private static String basePath =
@@ -477,8 +492,12 @@ public static void handleMenu(String userInput, JSONArray library) {
     String userInput = "";
 
     while (!userInput.equals("q")) {
-        
+
+      if(userInput.equals("h")) {
+        homeMenu(library);
+      } else {
         menu(library);
+      }
         
         // get user input
         userInput = menuInput.nextLine();

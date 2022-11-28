@@ -358,15 +358,15 @@ public static void showFavs() {
 
   } else if (getFavs.get(true).size() > 0) {
 
+    System.out.println("\n|============================================|\n");
+    System.out.println("|| ············  FAVORITES!  ···············||\n");
+
     for (Integer i = 0; i < getFavs.get(true).size(); i++) {
       String audio = getFavs.get(true).get(i);
-      System.out.print(i + 1 + "| ");
-      System.out.print("Song: " +  audio + "| Artist: " + findArtist.get(audio));
-      System.out.print(" | Year: " + getSongYear.get(audio));
-      System.out.print(" | Genre: " + getGenre.get(audio));
-      System.out.println("| File: " + titleSearch.get(audio) + "\n");
+      System.out.print("\n               " +  audio + "                    \n");
     }
-    System.out.println(getFavs.get(true));
+    System.out.println("\n  ···········································  ");
+    System.out.println("|=============================================|\n");
   }
 }
 

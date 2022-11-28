@@ -14,6 +14,7 @@ public class SpotifyLikeApp2 {
     String status;
     Long position;
     static String audioOps = "";
+    static String theSong;
     static Clip audioClip;
 
     // Assumes there are no favorited songs before starting the program
@@ -24,14 +25,27 @@ public class SpotifyLikeApp2 {
     static HashMap<String,String> findArtist = new HashMap<>();
     static HashMap<String,String> getGenre = new HashMap<>();
     static Map<String,Long> getSongYear = new HashMap<String,Long>();
-    static Map<String,Integer> playSongFile = new HashMap<String,Integer>();
-    static Map<Boolean,String> getFavorites = new HashMap<Boolean,String>();
-    static String theSong;
+    static Map<String,Integer> songFile = new HashMap<String,Integer>();
+    static Map<Integer,String> songByIndex = new HashMap<Integer,String>();
+
+    // getFavorites acts a multiValue hashmap for traking true/ false for favorites var
+    static Map<Boolean,ArrayList<String>> getFavorites = new HashMap<Boolean,ArrayList<String>>();
 
 /* ======================
 All Private Functions
 ========================*/
 
+// Func: forTrue()
+// Desc: populates getFavorites with (true, songs)
+private static void forTrue() {
+  getFavorites.put(true, new ArrayList<String>());
+}
+
+// Func: forFalse()
+// Desc: populates getFavorites with (false, songs)
+private static void forFalse() {
+  getFavorites.put(false, new ArrayList<String>());
+}
 // Func: showAudioMenu()
 // Desc: Displays options within the play menu
 private static void showAudioMenu() {
@@ -57,11 +71,9 @@ private static void handlePlayMenu(JSONArray library, String st) {
     break;
 
     case "i":
-      favorites = true;
       System.out.println("\n------------------------------> YOU LIKED THIS SONG! <-------------------------------\n");
       System.out.println("======================  Added to your favorites list  ======================");
-      getFavorites.put((favorites),(theSong));
-      System.out.println(getFavorites.get(favorites));
+      isFavorite(library);
       // Excluded break statement so that liked song will play immediately after liking the song.
 
     case "p":
@@ -162,7 +174,6 @@ private static void playMenu(String st, JSONArray library, Scanner sc) {
           String song = (String) Items.get("name");
           String file = (String) Items.get("filename");
           String artist = (String) Items.get("artist");
-          // Objects that still need to be placed into hashmaps:
           String genre = (String) Items.get("genre");
           Long releaseYear = (Long) Items.get("year");
   
@@ -180,11 +191,12 @@ private static void playMenu(String st, JSONArray library, Scanner sc) {
           //Place song and release year into getSongYear HashMap
           getSongYear.put((song),(releaseYear));
   
-          //Place song and index number into playSongFile HashMap
-          playSongFile.put((song),(songNum));
+          //Place song and index number into songFile HashMap
+          songFile.put((song),(songNum));
+
+          //Place index number and song into songByFile HashMap
+          songByIndex.put((songNum),(song));
         }
-        //System.out.println(dataArray);
-  
       } catch (FileNotFoundException e) {
         e.printStackTrace();
       } catch (IOException e) {
@@ -217,7 +229,7 @@ private static void playMenu(String st, JSONArray library, Scanner sc) {
   
     // open the audio file
     // get the filePath and open a audio file
-    final Integer songIndex = playSongFile.get(theSong);
+    final Integer songIndex = songFile.get(theSong);
     JSONObject obj = (JSONObject) library.get(songIndex);
     final String filename = (String) obj.get("filename");
     final String filePath = basePath + "/wav1/" + filename;
@@ -247,7 +259,7 @@ private static void playMenu(String st, JSONArray library, Scanner sc) {
 // Desc: Shows all song information for the song that is currently playing
 public static void nowPlayingInfo(JSONArray library) {
   for (Integer i = 0; i < library.size(); i++) {
-    if (i == playSongFile.get(theSong)) {
+    if (i == songFile.get(theSong)) {
       JSONObject songs = (JSONObject) library.get(i);
       String song_name = (String) songs.get("name");
       System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
@@ -322,11 +334,23 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
 
 // Func: isFavorite()
 // Desc: handles likes and dislike feature 
-public static void isFavorite(Scanner sc) {
-  if (favorites == true) {
-
+public static void isFavorite(JSONArray library) {
+  // populate getFavorites for all songs
+  for (Integer i = 0; i < library.size(); i++) {
+    if (songFile.get(theSong) == i) {
+      favorites = true;
+      getFavorites.get(true).add(songByIndex.get(i));
+      System.out.println(getFavorites.get(true));
+    }
   }
 }
+
+// Func: showFavorites()
+// Desc: displays all favorite songs and gives user option to play a song from the list
+public static void showFavorites() {
+  
+}
+
 // Func: handleMenu()
 // Desc: handles the user input for the app
 public static void handleMenu(String userInput, JSONArray library) {
@@ -348,8 +372,8 @@ public static void handleMenu(String userInput, JSONArray library) {
       break;
     
     case "!":
-      Scanner faveIn = new Scanner(System.in);
-      isFavorite(faveIn);
+      //Scanner faveIn = new Scanner(System.in);
+      //isFavorite(faveIn);
 
     case "f":
       
@@ -391,6 +415,11 @@ public static void handleMenu(String userInput, JSONArray library) {
 
   // "main" makes this class a java app that can be executed
   public static void main(final String[] args) {
+
+    // Creates new arrays for when favorites == true and favorites == false
+    forTrue();
+    forFalse();
+
     // reading audio library from json file
     JSONArray library = readAudioLibrary();
 

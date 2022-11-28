@@ -18,7 +18,7 @@ public class SpotifyLikeApp2 {
     static Clip audioClip;
 
     // Assumes there are no favorited songs before starting the program
-    static Boolean favorites = false;
+    static Boolean isFavorite = false;
 
     // HashMaps used to get specific song data
     static HashMap<String,String> titleSearch = new HashMap<>();    
@@ -28,7 +28,7 @@ public class SpotifyLikeApp2 {
     static Map<String,Integer> songFile = new HashMap<String,Integer>();
     static Map<Integer,String> songByIndex = new HashMap<Integer,String>();
 
-    // getFavs acts a multiValue hashmap for traking true/ false for favorites var
+    // getFavs acts a multiValue hashmap for traking true/ false for isFavorite var
     static Map<Boolean,ArrayList<String>> getFavs = new HashMap<Boolean,ArrayList<String>>();
 
 /* ======================
@@ -64,15 +64,16 @@ private static void handlePlayMenu(JSONArray library, String st) {
     
     case "d":
     System.out.println("\n------------------------------> YOU DISLIKED THIS SONG <-------------------------------\n");
-    System.out.println("======================  Romoved from your favorites list  ======================");
+    System.out.println("======================  Romoved from your isFavorite list  ======================");
     audioClip.stop();
-    getFavs.remove(favorites);
+
+    isFavorite = false;
     System.out.println(getFavs);
     break;
 
     case "i":
       System.out.println("\n------------------------------> YOU LIKED THIS SONG! <-------------------------------\n");
-      System.out.println("======================  Added to your favorites list  ======================");
+      System.out.println("======================  Added to your Favorites list  ======================");
       isFav(library);
       // Excluded break statement so that liked song will play immediately after liking the song.
 
@@ -339,7 +340,7 @@ public static void isFav(JSONArray library) {
   for (Integer i = 0; i < library.size(); i++) {
 
     if (songFile.get(theSong) == i) {
-      favorites = true;
+      isFavorite = true;
       
       // Add matching song to arraylist inside hashmap
       getFavs.get(true).add(songByIndex.get(i));
@@ -355,12 +356,12 @@ public static void showFavs() {
   if ((getFavs.get(true)).size() == 0 && (getFavs).get(false).size() == 0) {
     System.out.println("\nYou have not added any songs to this section yet.\n");
     System.out.println("Try searching for songs or picking a song from\n");
-    System.out.println("the library catalog to add as favorites.\n");
+    System.out.println("the library catalog to add as isFavorite.\n");
 
   } else if (getFavs.get(true).size() > 0) {
 
     System.out.println("\n|============================================|\n");
-    System.out.println("|| ············  FAVORITES!  ···············||\n");
+    System.out.println("|| ············  FAVORTIES!  ···············||\n");
 
     for (Integer i = 0; i < getFavs.get(true).size(); i++) {
       String audio = getFavs.get(true).get(i);
@@ -397,7 +398,7 @@ public static void handleMenu(String userInput, JSONArray library) {
 
     case "f":
       
-      // Show all favorites similar to library display
+      // Show all Favorites added by user
       showFavs();
       break;
     
@@ -437,7 +438,7 @@ public static void handleMenu(String userInput, JSONArray library) {
   // "main" makes this class a java app that can be executed
   public static void main(final String[] args) {
 
-    // Creates new arrays for when favorites == true and favorites == false
+    // Creates new arrays for when isFavorite == true and isFavorite == false
     forTrue();
     forFalse();
 

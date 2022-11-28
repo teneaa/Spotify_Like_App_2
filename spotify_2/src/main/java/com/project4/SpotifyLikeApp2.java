@@ -63,22 +63,30 @@ private static void handlePlayMenu(JSONArray library, String st) {
   switch (st) {
     
     case "d":
-    System.out.println("\n------------------------------> YOU DISLIKED THIS SONG <-------------------------------\n");
-    System.out.println("======================  Romoved from your isFavorite list  ======================");
+    System.out.println("================================================================================");
+    System.out.println("\n· · · · · · · · · · · ·  YOU DISLIKED THIS SONG · · · · · · · · · · · · · · ·\n");
+    System.out.println("\n· · · · · · · " + theSong + " has been removed your Favorites.· · · · · · · · ·\n");
+    System.out.println("================================================================================");
     audioClip.stop();
 
     isFavorite = false;
+
+    // Test to see if song was removed from getFavs(true) arraysEsports can offer more benefits than their physical counterparts and because of this schools should plan on implementing Esports into their programs. 
     System.out.println(getFavs);
     break;
 
     case "i":
-      System.out.println("\n------------------------------> YOU LIKED THIS SONG! <-------------------------------\n");
-      System.out.println("======================  Added to your Favorites list  ======================");
+      System.out.println("=============================================================================");
+      System.out.println("\n· · · · · · · · · · · · · YOU LIKED THIS SONG! · · · · · · · · · · · · · \n");
+      System.out.println("\n· · · · · · · " + theSong + " has been added to your Favorites.· · · · · · ·\n");
+      System.out.println("=============================================================================");
       isFav(library);
       // Excluded break statement so that liked song will play immediately after liking the song.
 
     case "p":
-      System.out.println("\n------------------------------> NOW PLAYING <-------------------------------\n");
+    System.out.println("==================================================================================");
+      System.out.println("\n· · · · · · · · · · · · · · ·  NOW PLAYING · · · · · · · · · · · · · · · · ·\n");
+      System.out.println("\n· · · · · · · · · · · · · · · · " + theSong + "· · · · · · · · · · · · · · · · \n");
       System.out.println("================================================================================");
       play(library);
       break;
@@ -88,7 +96,9 @@ private static void handlePlayMenu(JSONArray library, String st) {
         System.out.println("There is no audio currently playing.\n\nPress 'p' to play a song first");
         System.out.println("or press 'x' to exit.\n\n");
       } else {
-        System.out.println("\n--------------------------------> PAUSED <----------------------------------\n");
+        System.out.println("================================================================================");
+        System.out.println("\n· · · · · · · · · · · · · · · · PAUSED · · · · · · · · · · · · · · · · · · ·\n");
+        System.out.println("\n· · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · ·\n");
         System.out.println("================================================================================");
         //Place holder for pause method
         audioClip.close();
@@ -104,8 +114,10 @@ private static void handlePlayMenu(JSONArray library, String st) {
         System.out.println("There is no audio currently playing.\n\nPress 'p' to play a song first");
         System.out.println("or press 'x' to exit.\n\n");
       } else {
-        System.out.println("\n---------------------------------> STOPPED <----------------------------------\n");
-        System.out.println("==================================================================================");
+        System.out.println("================================================================================");
+        System.out.println("\n· · · · · · · · · · · · · · · · STOPPED · · · · · · · · · · · · · · · · · ·\n");
+        System.out.println("\n· · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · ·\n");
+        System.out.println("================================================================================");
         audioClip.stop();
       }
       
@@ -114,8 +126,10 @@ private static void handlePlayMenu(JSONArray library, String st) {
     case "x":
       
       // Exits play menu without stopping song play
-      System.out.println("\n---------------------------------> EXITED PLAY MENU <----------------------------------\n");
-      System.out.println("==================================================================================");
+      System.out.println("================================================================================");
+      System.out.println("\n· · · · · · · · · · · · ·  EXITED PLAY MENU · · · · · · · · · · · · · · · · ·\n");
+      System.out.println("\n· · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · ·\n");
+      System.out.println("================================================================================");
    
     default: 
       break;
@@ -372,13 +386,23 @@ public static void showFavs() {
   }
 }
 
+// Func: homeMenu()
+// Desc: Displays home menu for the app
+public static void homeMenu(JSONArray library) {
+  System.out.println("************************************************************************************************");
+  System.out.println("*                                        ·  H · O · M · E ·                                     ");
+  System.out.println("*----------------------------------------------------------------------------------------------*");
+  System.out.println("*|||···   [F]AVORITES  ··· [L]IBRARY  ···   [S]EARCH · BY · TITLE   ···   [E]XIT ···········|||*");
+  System.out.println("*----------------------------------------------------------------------------------------------*");
+  System.out.println("************************************************************************************************");
+}
+
 // Func: handleMenu()
 // Desc: handles the user input for the app
 public static void handleMenu(String userInput, JSONArray library) {
   switch (userInput) {
     case "h":
-      System.out.println("\n-->Home<--\n");
-      System.out.println("===============================================================================");
+      homeMenu(library);
       break;
     case "s":
 
@@ -403,8 +427,10 @@ public static void handleMenu(String userInput, JSONArray library) {
       break;
     
     case "q":
-      System.out.println("\n-->Quit<--\n");
-      System.out.println("===============================================================================");
+    System.out.println("================================================================================");
+    System.out.println("\n· · · · · · · · · · · · ·  THANK YOU FOR LISTENING WITH · · · · · · · · · · · · · · · ·\n");
+    System.out.println("\n· · · · · · · · · · · · · ·   KINDA · LIKE · SPOTIFY   · · · · · · · · · · · · · · ·\n");
+    System.out.println("================================================================================");
       break;
       
     default: 

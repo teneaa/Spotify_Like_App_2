@@ -12,7 +12,7 @@ public class SpotifyLikeApp2 {
     
     // All global variables for the app
     static String status;
-    static Integer position;
+    static Long position;
     static String audioOps = "";
     static String theSong;
     static Clip audioClip;
@@ -83,20 +83,25 @@ public class SpotifyLikeApp2 {
           play(lib);
     }
 
-    // Func: rewind()
+  // Func: rewind()
   // Desc: Rewinds current audio file back 5 seconds
   private static void rewind(JSONArray library) {
-    position = audioClip.getFramePosition() * 45000;
-    Integer rrAmount = 225000;
-    audioClip.setFramePosition(position - rrAmount);
+    position = audioClip.getMicrosecondPosition() * 45000;
+    //Long rrAmount = 225000L;
+    //audioClip.setFramePosition(position - rrAmount);
+    //audioClip.loop(position + rrAmount);
   }
 
   // Func: fastforward()
-  // Desc: Fastforwards current audio file forward 5 seconds
+  // Desc: Skips current audio file forward 5 seconds
   private static void fastforward(JSONArray library) {
-    position = audioClip.getFramePosition() * 45000;
-    Integer ffAmount = 225000;
-    audioClip.setFramePosition(position + ffAmount);
+    position = audioClip.getMicrosecondPosition();
+    Long ffAmount = position + 5000000L;
+    System.out.println("Microsecond position: " + position);
+    System.out.println("\n5 seconds later the MP is: " + ffAmount);
+    audioClip.setMicrosecondPosition(ffAmount);
+    audioClip.start();
+    System.out.print("\nMicrosecond position after ff implementation: " + position);
   }
 
   // Func: play() 
@@ -124,7 +129,7 @@ public class SpotifyLikeApp2 {
       final AudioInputStream in = AudioSystem.getAudioInputStream(file);
   
       audioClip.open(in);
-      audioClip.setFramePosition(0);
+      audioClip.setMicrosecondPosition(0);
       audioClip.loop(Clip.LOOP_CONTINUOUSLY);
     } catch (Exception e) {
       e.printStackTrace();

@@ -410,6 +410,9 @@ public static void currentTrack(JSONArray library) {
       JSONObject songs = (JSONObject) library.get(i);
       String song_name = (String) songs.get("name");
       System.out.print("\n\nCurrent Track:  ");
+      if (isFavorite == true) {
+        System.out.print("** FAVORITE! ** | ");
+      };
       System.out.print("Song: " +  song_name + "| Artist: " + findArtist.get(song_name));
       System.out.print(" | Year: " + getSongYear.get(song_name));
       System.out.print(" | Genre: " + getGenre.get(song_name));
@@ -554,7 +557,10 @@ public static void homeMenu(JSONArray library) {
   System.out.println("*|||··········                E[X]IT                           ··········|||*");
   System.out.println("*---------------------------------------------------------------------------*");
   System.out.println("*****************************************************************************\n");
-  System.out.print("\n                            Enter 'X' to Exit:              ");
+  System.out.println("\n                          Enter 'I' to [LIKE] the current track     \n");
+    System.out.println("                          Enter 'D' to [DISLIKE] the current track   \n");
+  System.out.print("                          Enter 'X' to Exit:              ");
+  
 }
 
 // Func: handleMenu()
@@ -609,7 +615,10 @@ public static void handleMenu(String userInput, JSONArray library) {
     System.out.println("*|||··········                [G]OOD BYE                       ··········|||*");
     System.out.println("*---------------------------------------------------------------------------*");
     System.out.println("*****************************************************************************\n");
-    System.out.print("\n                            Enter 'G' to say Goodbye:              ");
+    System.out.println("\n                            Enter 'I' to [LIKE] the current track     \n");
+    System.out.println("                            Enter 'D' to [DISLIKE] the current track   \n");
+    System.out.print("                            Enter 'G' to say Goodbye:              ");
+    
   }
 
   private static String basePath =

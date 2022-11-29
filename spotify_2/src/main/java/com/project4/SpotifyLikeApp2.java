@@ -86,16 +86,16 @@ public class SpotifyLikeApp2 {
     // Func: rewind()
   // Desc: Rewinds current audio file back 5 seconds
   private static void rewind(JSONArray library) {
-    position = audioClip.getFramePosition();
-    Integer rrAmount = 5;
+    position = audioClip.getFramePosition() * 45000;
+    Integer rrAmount = 225000;
     audioClip.setFramePosition(position - rrAmount);
   }
 
   // Func: fastforward()
   // Desc: Fastforwards current audio file forward 5 seconds
   private static void fastforward(JSONArray library) {
-    position = audioClip.getFramePosition();
-    Integer ffAmount = 5;
+    position = audioClip.getFramePosition() * 45000;
+    Integer ffAmount = 225000;
     audioClip.setFramePosition(position + ffAmount);
   }
 

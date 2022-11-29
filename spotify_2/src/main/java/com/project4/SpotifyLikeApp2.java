@@ -236,7 +236,7 @@ public class SpotifyLikeApp2 {
       System.out.println("\n************************************************************************************************");
       System.out.println("*                               A U D I O  · C O N T R O L S                                   *");
       System.out.println("*----------------------------------------------------------------------------------------------*");
-      System.out.println("*|||······    L[I]KE  ··· [P]LAY  ···   P[A]USE   ···   RES[U]ME ···  [S]TOP          ······|||*");
+      System.out.println("*|||······    L[I]KE  ··· [P]LAY  ···   P[A]USE   ···   RES[U]ME ···  S[T]OP          ······|||*");
       System.out.println("*----------------------------------------------------------------------------------------------*");
       System.out.println("*----------------------------------------------------------------------------------------------*");
       System.out.println("*|||······    [D]ISLIKE  ··· [F]ASTFORWARD  ···   [R]EWIND   ···   E[X]IT             ······|||*");
@@ -251,51 +251,24 @@ public class SpotifyLikeApp2 {
 
       switch (st) {
 
-        case "d":
-          
-          dislikedSong(library);
-          break;
+        case "d": dislikedSong(library); break;
 
-        case "i":
+        case "i": likedSong(library); break;
 
-          likedSong(library);
-          break;
+        case "p": userPlaysSong(library); break;
 
-        case "p":
+        case "a": userPausedSong(); break;
 
-          userPlaysSong(library);
-          break;
+        case "u": resumePausedSong(); break;
 
-        case "a":
+        case "r": rewind(library); break;
 
-          userPausedSong();
-          break;
+        case "f": fastforward(library); break;
 
-        case "u":
+        case "t": userStoppedSong(); break;
 
-          resumePausedSong();
-          break;
-
-        case "r":
-          
-          rewind(library);
-          break;
-
-        case "f":
-
-        fastforward(library);
-        break;
-
-        case "s":
-
-          userStoppedSong();
-          break;
-
-        case "x":
-
-        // Redirects user back to the home menu
-        exitsPlayMenu();
-
+        case "x":   exitsPlayMenu();  // Redirects user back to the home menu
+                    
         default:
         break;
       }
@@ -536,7 +509,7 @@ public static void showFavs() {
 public static void homeMenu(JSONArray library) {
 
   //Condition for showing current song
-  if (audioClip != null) {
+  if (audioClip != null && status == "playing") {
     currentTrack(library);
   }
 
@@ -562,44 +535,26 @@ public static void homeMenu(JSONArray library) {
 // Desc: handles the user input for the app
 public static void handleMenu(String userInput, JSONArray library) {
   switch (userInput) {
-    case "h":
-      // Displays home menu based on pickMenuOrDisplay()
-      break;
 
-    case "s":
+    case "h": break;  // Displays home menu based on pickMenuOrDisplay()
 
-      Scanner input = new Scanner(System.in);
-      handleCaseS(input, library);
-      break;
+    case "s": Scanner input = new Scanner(System.in);
+              handleCaseS(input, library); break;
 
-    case "l":
-      
-      Scanner numIn = new Scanner(System.in);  
-      handleCaseL(library, numIn);
-      break;
+    case "l": Scanner numIn = new Scanner(System.in);  
+              handleCaseL(library, numIn); break;
 
-    case "i":
+    case "i": likedSong(library); break;
 
-      likedSong(library);
-      break;
+    case "d": dislikedSong(library); break;
 
-    case "d":
-      dislikedSong(library);
-      break;
-
-    case "f":
-      
-      // Shows favorites or error message based on menue or display
-      break;
+    case "f": break;  // Shows favorites or error message based on menue or display
     
-    case "g":
-      goodBye();
-      break;
+    case "g": goodBye(); break;
       
-    default: 
-      break;
-    }
+    default: break;
   }
+}
 
   // Func: menu()
   // Desc: Displays menu for the app; different layout when home is selected
@@ -609,7 +564,7 @@ public static void handleMenu(String userInput, JSONArray library) {
     if (audioClip != null && status == "playing") {
       currentTrack(library);
     }
-    
+
     System.out.println("\n\n*****************************************************************************");
     System.out.println("*                    ·······  KINDA · LIKE · SPOTIRY ·······                *");
     System.out.println("*---------------------------------------------------------------------------*"); 
@@ -662,6 +617,8 @@ public static void handleMenu(String userInput, JSONArray library) {
 
       // do something
       handleMenu(userInput, library);
+
+      
     }
 
     // close the scanner

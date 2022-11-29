@@ -12,7 +12,7 @@ public class SpotifyLikeApp2 {
     
     // All global variables for the app
     static String status;
-    static Long position;
+    static Integer position;
     static String audioOps = "";
     static String theSong;
     static Clip audioClip;
@@ -77,8 +77,8 @@ public class SpotifyLikeApp2 {
     private static void userPlaysSong(JSONArray lib) {
 
           System.out.println("\n==================================================================================");
-          System.out.println("|| · · · · · · · · · · · · · ·  NOW PLAYING · · · · · · · · · · · · · · · · · · ||");
-          System.out.println("|| · · · · · · · · · · · · · · " + theSong + "· · · · · · · · · · · · · · · · · ·  ||");
+          System.out.println("|| · · · · · · · · · · · · · · · NOW PLAYING  · · · · · · · · · · · · · · · · · · ||");
+          System.out.println("                               " + theSong + "                                        ");
           System.out.println("==================================================================================\n");
           play(lib);
     }
@@ -86,17 +86,17 @@ public class SpotifyLikeApp2 {
     // Func: rewind()
   // Desc: Rewinds current audio file back 5 seconds
   private static void rewind(JSONArray library) {
-    position = audioClip.getMicrosecondPosition();
-    Long rrAmount = 5000000L;
-    audioClip.setMicrosecondPosition(position - rrAmount);
+    position = audioClip.getFramePosition();
+    Integer rrAmount = 5;
+    audioClip.setFramePosition(position - rrAmount);
   }
 
   // Func: fastforward()
   // Desc: Fastforwards current audio file forward 5 seconds
   private static void fastforward(JSONArray library) {
-    position = audioClip.getMicrosecondPosition() * 1000000L;
-    Long ffAmount = 5000000L;
-    audioClip.setMicrosecondPosition(position + ffAmount);
+    position = audioClip.getFramePosition();
+    Integer ffAmount = 5;
+    audioClip.setFramePosition(position + ffAmount);
   }
 
   // Func: play() 
@@ -124,7 +124,7 @@ public class SpotifyLikeApp2 {
       final AudioInputStream in = AudioSystem.getAudioInputStream(file);
   
       audioClip.open(in);
-      audioClip.setMicrosecondPosition(0);
+      audioClip.setFramePosition(0);
       audioClip.loop(Clip.LOOP_CONTINUOUSLY);
     } catch (Exception e) {
       e.printStackTrace();
@@ -144,14 +144,30 @@ public class SpotifyLikeApp2 {
       } else {
         System.out.println("\n================================================================================");
         System.out.println("|| · · · · · · · · · · · · · · · PAUSED · · · · · · · · · · · · · · · · · · · ||");
-        System.out.println("|| · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · · ||");
+        System.out.println("                               " + theSong + "                                     ");
         System.out.println("================================================================================\n");
-        // Place holder for pause method
-        audioClip.close();
-        // Insert pause method here
-        position = audioClip.getMicrosecondPosition();
-        audioClip.setMicrosecondPosition(position);
+        
+        // Uses stop() to pause clip at current frame
+        audioClip.stop();
+        
       }
+    }
+
+    // Func: resumePausedSong()
+    // Desc: plays song from paused state
+    private static void resumePausedSong() {
+      
+      if (audioClip == null) {
+        System.out.println("There is no audio currently playing.\n\nPress 'p' to play a song first");
+        System.out.println("or press 'x' to exit.\n\n");
+      } else {
+        System.out.println("\n================================================================================");
+        System.out.println("|| · · · · · · · · · · · · · · · · RESUMING · · · · · · · · · · · · · · · · · · ||");
+        System.out.println("                               " + theSong + "                                     ");
+        System.out.println("================================================================================\n");
+      }
+      // Uses start() to resume song in paused state
+      audioClip.start();
     }
 
     // Func: userStoppedSong()
@@ -165,9 +181,9 @@ public class SpotifyLikeApp2 {
       } else {
         System.out.println("\n================================================================================");
         System.out.println("||· · · · · · · · · · · · · · · · STOPPED · · · · · · · · · · · · · · · · · · ||");
-        System.out.println("||· · · · · · · · · · · · · · · ·" + theSong + "· · · · · · · · · · · · · · · · ·||");
+        System.out.println("                                 " + theSong + "                                   ");
         System.out.println("================================================================================\n");
-        audioClip.stop();
+        audioClip.close();
       }
     }
 
@@ -196,8 +212,12 @@ public class SpotifyLikeApp2 {
     // Desc: Displays options within the play menu
     private static void showAudioMenu() {
       System.out.println("\n************************************************************************************************");
+      System.out.println("*                               A U D I O  · C O N T R O L S                                   *");
       System.out.println("*----------------------------------------------------------------------------------------------*");
-      System.out.println("*|||···   L[I]ke / [D]islike  ··· [P]lay  ···   p[A]use   ···   [S]top   ···   e[X]it ······|||*");
+      System.out.println("*|||······    L[I]ke  ··· [P]lay  ···   p[A]use   ···   res[U]me ···  [S]top          ······|||*");
+      System.out.println("*----------------------------------------------------------------------------------------------*");
+      System.out.println("*----------------------------------------------------------------------------------------------*");
+      System.out.println("*|||······    [D]islike  ··· [F]astForward  ···   [R]ewind   ···   e[X]it             ······|||*");
       System.out.println("*----------------------------------------------------------------------------------------------*");
       System.out.println("************************************************************************************************\n");
     }
@@ -235,6 +255,11 @@ public class SpotifyLikeApp2 {
         case "a":
 
           userPausedSong();
+          break;
+
+        case "u":
+
+          resumePausedSong();
           break;
 
         case "r":
@@ -474,7 +499,7 @@ public static void showFavs() {
     System.out.println("||============================================||");
     System.out.println("\nYou have not added any songs to this section yet.\n");
     System.out.println("Try searching for songs or picking a song from\n");
-    System.out.println("the library catalog to add as isFavorite.\n\n");
+    System.out.println("the library catalog to add as Favorites.\n\n");
 
   } else if (getFavs.get(true).size() > 0) {
 

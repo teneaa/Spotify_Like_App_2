@@ -86,22 +86,43 @@ public class SpotifyLikeApp2 {
   // Func: rewind()
   // Desc: Rewinds current audio file back 5 seconds
   private static void rewind(JSONArray library) {
-    position = audioClip.getMicrosecondPosition() * 45000;
-    //Long rrAmount = 225000L;
-    //audioClip.setFramePosition(position - rrAmount);
-    //audioClip.loop(position + rrAmount);
+
+    // get current Microsecond position of audio 
+    position = audioClip.getMicrosecondPosition();
+
+    // Declare variable to hold rewind position
+    Long rwPos = position - 5000000L;
+
+    // Sets the audioClip positon to the rewind position
+    audioClip.setMicrosecondPosition(rwPos);
+
+    // Starts playing the clip from the newly set position
+    position = audioClip.getMicrosecondPosition();
+    audioClip.start();
+    System.out.println("\n================================================================================");
+    System.out.println("||· · · · · · · · · · · ·  << << REWIND 5 seconds · · · · · · · · · · · · · · · ||");
+    System.out.println("================================================================================\n");
   }
 
   // Func: fastforward()
   // Desc: Skips current audio file forward 5 seconds
   private static void fastforward(JSONArray library) {
+
+    // get current Microsecond position of audio
     position = audioClip.getMicrosecondPosition();
-    Long ffAmount = position + 5000000L;
-    System.out.println("Microsecond position: " + position);
-    System.out.println("\n5 seconds later the MP is: " + ffAmount);
-    audioClip.setMicrosecondPosition(ffAmount);
+
+    // Declare variable to hold fastforward position
+    Long ffPos = position + 5000000L;
+
+    // Sets the audioClip positon to the rewind position
+    audioClip.setMicrosecondPosition(ffPos);
+  
+    // Starts playing the clip from the newly set position
+    position = audioClip.getMicrosecondPosition();
     audioClip.start();
-    System.out.print("\nMicrosecond position after ff implementation: " + position);
+    System.out.println("\n================================================================================");
+    System.out.println("||· · · · · · · · · · · · · 5 seconds FORWARD >> >> · · · · · · · · · · · · · · ||");
+    System.out.println("================================================================================\n");
   }
 
   // Func: play() 
@@ -443,8 +464,8 @@ public static void handleCaseL(JSONArray library, Scanner sc) {
 
     // User input prompt for indicating which song from the list should be played
     System.out.println("===============================================================================");
-    System.out.println("Which song from the list would you like to listen to?"); 
-    System.out.println("\nex: type '1' for Cement Lunch \n");
+    System.out.println("Which song from the list would you like to listen to?\n\n"); 
+    System.out.println("ex: type '1' for La Gata Bajo La Lluvia \n");
 
     Integer pickNum = sc.nextInt();
 
@@ -489,7 +510,7 @@ public static void showFavs() {
     System.out.println("|| ············  FAVORTIES!  ·················||");
     System.out.println("||············································||");
     System.out.println("||============================================||");
-    System.out.println("\nYou have not added any songs to this section yet.\n");
+    System.out.println("\nYour favorites section is empty at the moment.\n");
     System.out.println("Try searching for songs or picking a song from\n");
     System.out.println("the library catalog to add as Favorites.\n\n");
 
@@ -621,9 +642,7 @@ public static void handleMenu(String userInput, JSONArray library) {
       userInput = userInput.toLowerCase();
 
       // do something
-      handleMenu(userInput, library);
-
-      
+      handleMenu(userInput, library); 
     }
 
     // close the scanner

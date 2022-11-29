@@ -598,7 +598,7 @@ public static void handleMenu(String userInput, JSONArray library) {
     }
 
     System.out.println("\n\n*****************************************************************************");
-    System.out.println("*                    ·······  KINDA · LIKE · SPOTIRY ·······                *");
+    System.out.println("*                    ·······  KINDA · LIKE · SPOTIFY ·······                *");
     System.out.println("*---------------------------------------------------------------------------*"); 
     System.out.println("*|||··········                [H]OME                           ··········|||*");
     System.out.println("*---------------------------------------------------------------------------*");

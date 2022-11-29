@@ -62,9 +62,9 @@ public class SpotifyLikeApp2 {
       }
     }
 
-    // Func: userQuits()
+    // Func: goodBye()
     // Desc: Shows thank you message when user quits the program
-    private static void userQuits() {
+    private static void goodBye() {
 
       System.out.println("\n********************************************************************************");
       System.out.println("* · · · · · · · · · · · ·  THANK YOU FOR LISTENING WITH · · · · · · · · · ·  · *");
@@ -187,15 +187,37 @@ public class SpotifyLikeApp2 {
       }
     }
 
-    // Func: userLikedSong()
-    // Desc: Displays announced about liked song
-    private static void userLikedSong(JSONArray lib) {
+    // Func: likedSong()
+    // Desc: Displays announcement about liked song
+    private static void likedSong(JSONArray lib) {
 
       System.out.println("=============================================================================");
       System.out.println("· · · · · · · · · · · · · YOU LIKED THIS SONG! · · · · · · · · · · · · · · · ");
       System.out.println("\n· · · · · · · " + theSong + " has been added to your Favorites.· · · · · · ·\n");
       System.out.println("=============================================================================");
       isFav(lib);
+    }
+
+    // Func: dislikedSong()
+    // Desc: Displays announcement about disliked song
+    //       Removes song from favorites list.
+    private static void dislikedSong(JSONArray lib) {
+      System.out.println("================================================================================");
+      System.out.println("\n· · · · · · · · · · · ·  YOU DISLIKED THIS SONG · · · · · · · · · · · · · · ·\n");
+      System.out.println("\n· · · · · · · " + theSong + " has been removed your Favorites.· · · · · · · · ·\n");
+      System.out.println("================================================================================");
+      audioClip.stop();
+
+      //Uses for loop from isFav() to remove song from favorites list
+      for (Integer i = 0; i < lib.size(); i++) {
+
+        if (songFile.get(theSong) == i) {
+          isFavorite = false;
+          
+          // Remove matching song from arraylist inside hashmap
+          getFavs.get(true).remove(songByIndex.get(i));
+        }
+      }
     }
 
     // Func: exitsPlayMenu()
@@ -214,12 +236,13 @@ public class SpotifyLikeApp2 {
       System.out.println("\n************************************************************************************************");
       System.out.println("*                               A U D I O  · C O N T R O L S                                   *");
       System.out.println("*----------------------------------------------------------------------------------------------*");
-      System.out.println("*|||······    L[I]ke  ··· [P]lay  ···   p[A]use   ···   res[U]me ···  [S]top          ······|||*");
+      System.out.println("*|||······    L[I]KE  ··· [P]LAY  ···   P[A]USE   ···   RES[U]ME ···  [S]TOP          ······|||*");
       System.out.println("*----------------------------------------------------------------------------------------------*");
       System.out.println("*----------------------------------------------------------------------------------------------*");
-      System.out.println("*|||······    [D]islike  ··· [F]astForward  ···   [R]ewind   ···   e[X]it             ······|||*");
+      System.out.println("*|||······    [D]ISLIKE  ··· [F]ASTFORWARD  ···   [R]EWIND   ···   E[X]IT             ······|||*");
       System.out.println("*----------------------------------------------------------------------------------------------*");
       System.out.println("************************************************************************************************\n");
+      System.out.print("\n                            Enter 'X' to Exit:              ");
     }
 
     // Func: handlePlayMenu()
@@ -229,23 +252,14 @@ public class SpotifyLikeApp2 {
       switch (st) {
 
         case "d":
-          System.out.println("================================================================================");
-          System.out.println("\n· · · · · · · · · · · ·  YOU DISLIKED THIS SONG · · · · · · · · · · · · · · ·\n");
-          System.out.println("\n· · · · · · · " + theSong + " has been removed your Favorites.· · · · · · · · ·\n");
-          System.out.println("================================================================================");
-          audioClip.stop();
-
-          isFavorite = false;
-
-          // Test to see if song was removed from getFavs(true) arrays
-          System.out.println(getFavs);
+          
+          dislikedSong(library);
           break;
 
         case "i":
 
-          userLikedSong(library);
-          // Excluded break statement so that liked song will play immediately after
-          // liking the song.
+          likedSong(library);
+          break;
 
         case "p":
 
@@ -512,6 +526,8 @@ public static void showFavs() {
     }
     System.out.println("||············································||");
     System.out.println("||============================================||\n\n");
+    System.out.println("      Enter 'I' to [LIKE] the current track     \n");
+    System.out.println("      Enter 'D' to [DISLIKE] the current track   \n");
   }
 }
 
@@ -536,9 +552,10 @@ public static void homeMenu(JSONArray library) {
   System.out.println("*|||··········                [S]EARCH · BY · TITLE            ··········|||*");
   System.out.println("*---------------------------------------------------------------------------*");
   System.out.println("*---------------------------------------------------------------------------*"); 
-  System.out.println("*|||··········                [E]XIT                           ··········|||*");
+  System.out.println("*|||··········                E[X]IT                           ··········|||*");
   System.out.println("*---------------------------------------------------------------------------*");
   System.out.println("*****************************************************************************\n");
+  System.out.print("\n                            Enter 'X' to Exit:              ");
 }
 
 // Func: handleMenu()
@@ -561,13 +578,22 @@ public static void handleMenu(String userInput, JSONArray library) {
       handleCaseL(library, numIn);
       break;
 
+    case "i":
+
+      likedSong(library);
+      break;
+
+    case "d":
+      dislikedSong(library);
+      break;
+
     case "f":
       
       // Shows favorites or error message based on menue or display
       break;
     
-    case "q":
-      userQuits();
+    case "g":
+      goodBye();
       break;
       
     default: 
@@ -587,22 +613,22 @@ public static void handleMenu(String userInput, JSONArray library) {
     System.out.println("\n\n*****************************************************************************");
     System.out.println("*                    ·······  KINDA · LIKE · SPOTIRY ·······                *");
     System.out.println("*---------------------------------------------------------------------------*"); 
-    System.out.println("*|||··········                [H]ome                           ··········|||*");
+    System.out.println("*|||··········                [H]OME                           ··········|||*");
     System.out.println("*---------------------------------------------------------------------------*");
     System.out.println("*---------------------------------------------------------------------------*"); 
-    System.out.println("*|||··········                [S]earch by title                ··········|||*");
+    System.out.println("*|||··········                [S]EARCH BY TITLE                ··········|||*");
     System.out.println("*---------------------------------------------------------------------------*");
     System.out.println("*---------------------------------------------------------------------------*"); 
-    System.out.println("*|||··········                [L]ibrary                        ··········|||*");
+    System.out.println("*|||··········                [L]IBRARY                        ··········|||*");
     System.out.println("*---------------------------------------------------------------------------*");
     System.out.println("*---------------------------------------------------------------------------*"); 
-    System.out.println("*|||··········                [F]avorites                      ··········|||*");
+    System.out.println("*|||··········                [F]AVORITES                      ··········|||*");
     System.out.println("*---------------------------------------------------------------------------*");
     System.out.println("*---------------------------------------------------------------------------*"); 
-    System.out.println("*|||··········                [Q]uit                           ··········|||*");
+    System.out.println("*|||··········                [G]OOD BYE                       ··········|||*");
     System.out.println("*---------------------------------------------------------------------------*");
     System.out.println("*****************************************************************************\n");
-    System.out.print("\n                            Enter q to Quit:              ");
+    System.out.print("\n                            Enter 'G' to say Goodbye:              ");
   }
 
   private static String basePath =
@@ -623,7 +649,7 @@ public static void handleMenu(String userInput, JSONArray library) {
 
     String userInput = "";
 
-    while (!userInput.equals("q")) {
+    while (!userInput.equals("g")) {
 
       // get menu()
       pickMenuOrDisplay(library, userInput);
